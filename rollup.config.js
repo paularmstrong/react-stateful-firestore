@@ -22,7 +22,8 @@ export default [
       {
         file: 'build/index.js',
         format: 'cjs',
-        sourcemap: true
+        sourcemap: true,
+        exports: 'named'
       }
     ],
     plugins,

@@ -1,4 +1,6 @@
 // @flow
+import connect from './connect';
+import Provider from './Provider';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import reducers from './reducers';
@@ -30,7 +32,7 @@ export default function init(app: firebase.app.App, userCollection?: string) {
   if (currentUser) {
     store.dispatch(setUser(currentUser));
   }
-  auth.onAuthStateChanged((auth, currentUser?: any) => {
+  auth.onAuthStateChanged((currentUser?: any) => {
     store.dispatch(unsetUser());
     if (currentUser) {
       store.dispatch(setUser(currentUser));
@@ -39,3 +41,5 @@ export default function init(app: firebase.app.App, userCollection?: string) {
 
   return { app, select, selectAuth, store };
 }
+
+export { connect, Provider };

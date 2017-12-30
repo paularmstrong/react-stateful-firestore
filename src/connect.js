@@ -1,7 +1,7 @@
 // @flow
 import firebase from 'firebase';
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import { object } from 'prop-types';
 
 import type { StoreState } from './reducers';
 import type { Store } from 'redux';
@@ -75,3 +75,5 @@ export const connect = (
       }, state);
   };
 };
+
+export default connect;

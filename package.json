@@ -2,8 +2,8 @@
   "name": "react-firestore",
   "version": "0.0.0",
   "description": "Firestore query and data management for React",
-  "main": "dist",
-  "module": "lib",
+  "main": "build",
+  "module": "build/src",
   "files": ["build/*", "lib/*", "LICENSE", "README.md"],
   "author": "Paul Armstrong <paul@spaceyak.com>",
   "license": "MIT",
@@ -44,8 +44,8 @@
   "scripts": {
     "build": "npm-run-all build:cjs build:es",
     "build:cjs": "rollup -c",
-    "build:es": "babel src/** -d lib",
-    "prebuild:es": "rimraf lib",
+    "build:es": "babel src/*.js src/**/*.js -d build/",
+    "prebuild:es": "rimraf build/src",
     "precommit": "flow && lint-staged"
   },
   "lint-staged": {
