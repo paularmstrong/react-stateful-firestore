@@ -1,5 +1,4 @@
 // @flow
-import { auth } from 'firebase';
 import { AUTH } from '../actions';
 import firebase from 'firebase';
 

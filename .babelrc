@@ -1,10 +1,13 @@
 {
   "presets": [
-    "env",
+    ["env", { "modules": false }],
     "flow"
   ],
   "plugins": [
+    "external-helpers",
     "syntax-flow",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    "transform-react-jsx"
   ]
 }
