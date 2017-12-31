@@ -1,6 +1,6 @@
 {
   "name": "react-stateful-firestore",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Firestore query and data management for React",
   "main": "build",
   "module": "build/src",
