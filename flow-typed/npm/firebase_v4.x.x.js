@@ -704,7 +704,7 @@ declare module 'firebase' {
     },
     messaging: {
       (app?: $npm$firebase$App): $npm$firebase$messaging$Messaging,
-      Messaging: $npm$firebase$messaging$Messaging
+      Messaging: typeof $npm$firebase$messaging$Messaging
     },
     storage: {
       (app?: $npm$firebase$App): $npm$firebase$storage$Storage,

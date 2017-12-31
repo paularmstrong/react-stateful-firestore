@@ -4,12 +4,13 @@ import { FetchStatus } from './modules/fetchStatus';
 import { object } from 'prop-types';
 import React, { Component } from 'react';
 
-import type { FirebaseUser } from 'firebase';
+import type firebase from 'firebase';
 
-type AuthUser = { authUser: FirebaseUser, fetchStatus: $Values<typeof FetchStatus>, user: {} };
+type AuthUser = { authUser: firebase.FirebaseUser, fetchStatus: $Values<typeof FetchStatus>, user: {} };
 
 type Props = {
-  auth: AuthUser
+  auth: firebase.auth.Auth,
+  authUser: AuthUser
 };
 
 type AuthStatusHandler = (auth: { ...AuthUser, action?: 'signin' | 'signout' }, props: any) => void;
@@ -21,8 +22,8 @@ const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponen
     static displayName = 'ConnectAuth';
 
     componentWillUpdate(nextProps: Props) {
-      const { auth: prevAuth } = this.props;
-      const { auth: nextAuth } = nextProps;
+      const { authUser: prevAuth } = this.props;
+      const { authUser: nextAuth } = nextProps;
       if (nextAuth.authUser !== prevAuth.authUser || nextAuth.user !== prevAuth.user) {
         const action =
           prevAuth.authUser && !nextAuth.authUser
@@ -33,7 +34,7 @@ const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponen
     }
 
     render() {
-      const { fetchStatus } = this.props.auth;
+      const { authUser: { fetchStatus } } = this.props;
       switch (fetchStatus) {
         case FetchStatus.LOADED:
         case FetchStatus.FAILED:
@@ -47,7 +48,7 @@ const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponen
   }
 
   return connect(({ selectAuth }) => ({
-    auth: selectAuth
+    authUser: selectAuth
   }))(ConnectAuth);
 };
 

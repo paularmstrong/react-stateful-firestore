@@ -21,11 +21,14 @@ export const connect = (
     _selectors: { [key: string]: (state: any, props: Props) => any };
     context: {
       firebase: {
+        auth: firebase.auth.Auth,
         firestore: firebase.firestore.Firestore,
+        messaging: firebase.messaging.Messaging,
         select: (
           ref: typeof firebase.firestore.DocumentReference | typeof firebase.firestore.CollectionReference
         ) => any,
         selectAuth: () => any,
+        storage: firebase.storage.Storage,
         store: Store<StoreState, *>
       }
     };
@@ -61,8 +64,17 @@ export const connect = (
     }
 
     render() {
-      const { firestore } = this.context.firebase;
-      return <WrappedComponent {...this.props} {...this.state} firestore={firestore} />;
+      const { auth, firestore, messaging, storage } = this.context.firebase;
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...this.state}
+          auth={auth}
+          firestore={firestore}
+          messaging={messaging}
+          storage={storage}
+        />
+      );
     }
 
     _handleState = () => {
