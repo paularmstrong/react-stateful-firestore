@@ -17,7 +17,7 @@ export const connect = (
   getSelectors: (select: any, firestore: firebase.firestore.Firestore, props: Props) => SelectorQueryMap
 ) => (WrappedComponent: React$ComponentType<*>): React$ComponentType<*> => {
   return class extends Component<Props, State> {
-    _unsubscribe: () => void;
+    _unsubscribe: null | (() => void);
     _selectors: { [key: string]: (state: any, props: Props) => any };
     context: {
       firebase: {
@@ -29,6 +29,8 @@ export const connect = (
         store: Store<StoreState, *>
       }
     };
+
+    static displayName = 'Connect';
 
     static contextTypes = {
       firebase: object.isRequired
@@ -54,6 +56,7 @@ export const connect = (
     componentWillUnmount() {
       if (this._unsubscribe) {
         this._unsubscribe();
+        this._unsubscribe = null;
       }
     }
 
@@ -63,9 +66,11 @@ export const connect = (
     }
 
     _handleState = () => {
-      const { store } = this.context.firebase;
-      const storeState = store.getState();
-      this.setState((state) => this._reduceSelectors(storeState, state));
+      if (this._unsubscribe) {
+        const { store } = this.context.firebase;
+        const storeState = store.getState();
+        this.setState((state) => this._reduceSelectors(storeState, state));
+      }
     };
 
     _reduceSelectors = (storeState: StoreState, state: State) =>

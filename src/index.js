@@ -12,7 +12,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 let store;
 
-export default function init(app: firebase.app.App, userCollection?: string) {
+export default function init(app: firebase.app.App, userCollection?: string): Promise<any> {
   if (store) {
     throw new Error('Cannot initialize store more than once.');
   }
@@ -41,16 +41,19 @@ export default function init(app: firebase.app.App, userCollection?: string) {
     currentUid = currentUser.uid;
     store.dispatch(setUser(currentUser));
   }
-  auth.onAuthStateChanged((newUser?: any) => {
-    store.dispatch(setUser(newUser));
-    if (newUser) {
-      currentUid = newUser.uid;
-    } else {
-      store.dispatch(unsetUser(currentUid));
-    }
-  });
 
-  return { app, select, selectAuth, store };
+  return new Promise((resolve, reject) => {
+    auth.onAuthStateChanged((newUser?: any) => {
+      store.dispatch(setUser(newUser)).then(() => {
+        resolve({ app, select, selectAuth, store });
+      });
+      if (newUser) {
+        currentUid = newUser.uid;
+      } else {
+        store.dispatch(unsetUser(currentUid));
+      }
+    });
+  });
 }
 
 export { connect, connectAuth, Provider };

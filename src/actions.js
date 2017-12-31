@@ -118,16 +118,21 @@ export const setUser = (currentUser?: { uid: string }) => (
   dispatch: Dispatch,
   getState: GetState,
   { firestore }: ThunkArgs
-) => {
+): Promise<any> => {
   if (currentUser) {
     const query = firestore.doc(`users/${currentUser.uid}`);
     dispatch(addQuery(query, _authQueryPrefix));
     dispatch(addListener(query, _authQueryPrefix));
   }
   dispatch({ type: AUTH.CHANGE, payload: currentUser });
+  return Promise.resolve();
 };
 
-export const unsetUser = (uid?: string) => (dispatch: Dispatch, getState: GetState, { firestore }: ThunkArgs) => {
+export const unsetUser = (uid?: string) => (
+  dispatch: Dispatch,
+  getState: GetState,
+  { firestore }: ThunkArgs
+): Promise<any> => {
   if (uid) {
     const query = firestore.doc(`users/${uid}`);
     dispatch(removeQuery(query, _authQueryPrefix));
@@ -135,4 +140,5 @@ export const unsetUser = (uid?: string) => (dispatch: Dispatch, getState: GetSta
     dispatch({ type: COLLECTIONS.REMOVE, payload: { id: uid }, meta: { query } });
     dispatch({ type: AUTH.CHANGE });
   }
+  return Promise.resolve();
 };

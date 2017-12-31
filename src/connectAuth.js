@@ -12,19 +12,23 @@ type Props = {
   auth: AuthUser
 };
 
-type AuthStatusHandler = (auth: { ...AuthUser, logged?: 'in' | 'out' }, props: any) => void;
+type AuthStatusHandler = (auth: { ...AuthUser, action?: 'signin' | 'signout' }, props: any) => void;
 
 const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponent?: React$ComponentType<*>) => (
   WrappedComponent: React$ComponentType<*>
 ): React$ComponentType<*> => {
   class ConnectAuth extends Component<Props> {
-    componentWillReceiveProps(nextProps: Props) {
+    static displayName = 'ConnectAuth';
+
+    componentWillUpdate(nextProps: Props) {
       const { auth: prevAuth } = this.props;
       const { auth: nextAuth } = nextProps;
       if (nextAuth.authUser !== prevAuth.authUser || nextAuth.user !== prevAuth.user) {
-        const logged =
-          prevAuth.authUser && !nextAuth.authUser ? 'out' : !prevAuth.authUser && nextAuth.authUser ? 'in' : undefined;
-        handleAuthStatus({ ...nextAuth, logged }, nextProps);
+        const action =
+          prevAuth.authUser && !nextAuth.authUser
+            ? 'signout'
+            : !prevAuth.authUser && nextAuth.authUser ? 'signin' : undefined;
+        handleAuthStatus({ ...nextAuth, action }, nextProps);
       }
     }
 
