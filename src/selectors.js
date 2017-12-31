@@ -43,10 +43,10 @@ export const initSelectAuth = (auth: firebase.auth.Auth, userCollection: string 
 ) => {
   const { uid } = state.auth;
   if (!uid) {
-    return { authUser: undefined, fetchStatus: FetchStatus.LOADING, user: undefined };
+    return { authUser: undefined, fetchStatus: FetchStatus.NONE, user: undefined };
   }
   const query = state.queries[`auth|${userCollection}/${uid}`];
-  const fetchStatus = query ? query.fetchStatus : FetchStatus.NONE;
+  const fetchStatus = query ? query.fetchStatus : FetchStatus.LOADED;
   const user = state.collections[userCollection] ? state.collections[userCollection][uid] : undefined;
   const authUser = auth.currentUser;
   return { authUser, fetchStatus, user };

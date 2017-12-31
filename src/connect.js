@@ -15,7 +15,7 @@ type SelectorQueryMap = {
 
 export const connect = (
   getSelectors: (select: any, firestore: firebase.firestore.Firestore, props: Props) => SelectorQueryMap
-) => (WrappedComponent: React$ComponentType<*>) => {
+) => (WrappedComponent: React$ComponentType<*>): React$ComponentType<*> => {
   return class extends Component<Props, State> {
     _unsubscribe: () => void;
     _selectors: { [key: string]: (state: any, props: Props) => any };

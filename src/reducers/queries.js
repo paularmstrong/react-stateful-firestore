@@ -107,10 +107,9 @@ export function reducer(state: State = defaultState, action: Action): State {
 
     case QUERIES.REMOVE: {
       const { meta: { queryId } } = action;
-      return {
-        ...state,
-        [queryId]: undefined
-      };
+      const newState = { ...state };
+      delete newState[queryId];
+      return newState;
     }
 
     default:

@@ -4,7 +4,6 @@
     "flow"
   ],
   "plugins": [
-    "external-helpers",
     "syntax-flow",
     "transform-object-rest-spread",
     "transform-class-properties",

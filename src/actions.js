@@ -16,7 +16,8 @@ type ThunkArgs = { auth: firebase.auth.Auth, firestore: firebase.firestore.Fires
 
 export const COLLECTIONS = {
   MODIFY: createActionType('collections/MODIFY'),
-  MODIFY_ONE: createActionType('collections/MODIFY_ONE')
+  MODIFY_ONE: createActionType('collections/MODIFY_ONE'),
+  REMOVE: createActionType('collections/REMOVE')
 };
 
 export const QUERIES = {
@@ -113,24 +114,25 @@ export const AUTH = {
   CHANGE: createActionType('auth/CHANGE')
 };
 
-export const setUser = (currentUser: { uid: string }) => (
+export const setUser = (currentUser?: { uid: string }) => (
   dispatch: Dispatch,
   getState: GetState,
   { firestore }: ThunkArgs
 ) => {
-  const query = firestore.doc(`users/${currentUser.uid}`);
-  dispatch(addQuery(query, _authQueryPrefix));
-  dispatch(addListener(query, _authQueryPrefix));
+  if (currentUser) {
+    const query = firestore.doc(`users/${currentUser.uid}`);
+    dispatch(addQuery(query, _authQueryPrefix));
+    dispatch(addListener(query, _authQueryPrefix));
+  }
   dispatch({ type: AUTH.CHANGE, payload: currentUser });
 };
 
-export const unsetUser = () => (dispatch: Dispatch, getState: GetState, { firestore }: ThunkArgs) => {
-  const state = getState();
-  const { uid } = state.auth;
+export const unsetUser = (uid?: string) => (dispatch: Dispatch, getState: GetState, { firestore }: ThunkArgs) => {
   if (uid) {
     const query = firestore.doc(`users/${uid}`);
     dispatch(removeQuery(query, _authQueryPrefix));
     dispatch(removeListener(query, _authQueryPrefix));
+    dispatch({ type: COLLECTIONS.REMOVE, payload: { id: uid }, meta: { query } });
     dispatch({ type: AUTH.CHANGE });
   }
 };

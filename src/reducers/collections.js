@@ -80,6 +80,17 @@ export function reducer(state: State = defaultState, action: Action) {
       };
     }
 
+    case COLLECTIONS.REMOVE: {
+      const { meta, payload: { id } } = action;
+      const path = getCollectionQueryPath(meta.query);
+      const pathDocs = { ...state[path] };
+      delete pathDocs[id];
+      return {
+        ...state,
+        [path]: pathDocs
+      };
+    }
+
     default:
       return state;
   }
