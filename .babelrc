@@ -1,5 +1,4 @@
 {
-  "ignore": ["node_module/**"],
   "env": {
     "production": {
       "presets": [["env", { "modules": false }], "flow"],

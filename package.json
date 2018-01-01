@@ -40,7 +40,6 @@
     "rollup-plugin-node-resolve": "^3.0.0"
   },
   "peerDependencies": {
-    "firebase": ">=4.8.1",
     "prop-types": ">=15.6.0",
     "react": "~16.0.0"
   },
@@ -51,7 +50,7 @@
     "build:flow": "flow-copy-source -i **/__tests__/** src build/src",
     "prebuild": "rimraf build",
     "precommit": "flow && lint-staged",
-    "test": "jest"
+    "test": "BABEL_ENV=development jest"
   },
   "lint-staged": {
     "*.{js,json,css,md}": ["prettier --write", "git add"]
