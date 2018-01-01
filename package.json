@@ -55,7 +55,7 @@
     "test": "BABEL_ENV=development jest"
   },
   "lint-staged": {
-    "*.js": ["test", "git add"],
+    "src/**/*.js": ["test", "git add"],
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "dependencies": {
