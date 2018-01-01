@@ -13,9 +13,20 @@ Provides bindings for authentication, Firestore, messaging, and storage data in 
 ## Quick Start
 
 ```js
+import firebase from 'firebase';
+import 'firebase/firestore';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import initFirestore, { Provider } from 'react-stateful-firestore';
+
+const app = firebase.initializeApp({
+  apiKey: '<API_KEY>',
+  authDomain: '<DOMAIN>',
+  databaseURL: '<DB_URL>',
+  projectId: '<PROJECT_ID>',
+  storageBucket: '<STORAGE_BUCKET>',
+  messagingSenderId: '<MESSAGE_ID>'
+});
 
 initFirestore(app).then((firestore) => {
   ReactDOM.render(
