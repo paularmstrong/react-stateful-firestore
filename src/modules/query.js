@@ -1,10 +1,10 @@
 // @flow
-import firebase from 'firebase';
+import type { FieldPath, Query } from 'firebase/firestore';
 
 type Operation = { name: '<' | '<=' | '==' | '>=' | '>' };
 type Value = { internalValue: any };
 type RelationalFilter = {
-  field: firebase.firestore.FieldPath,
+  field: FieldPath,
   op: Operation,
   value: Value
 };
@@ -15,9 +15,9 @@ const filterToString = (filter: RelationalFilter) => {
 };
 
 // $FlowFixMe Undocumented key/value
-const pathToString = (path: firebase.firestore.FieldPath) => path.segments.join('/');
+const pathToString = (path: FieldPath) => path.segments.join('/');
 
-export const getQueryId = (query: firebase.firestore.Query): string => {
+export const getQueryId = (query: Query): string => {
   // $FlowFixMe Undocumented key/value
   if (query.id && query.id === query.path) {
     // $FlowFixMe Undocumented key/value
@@ -39,7 +39,7 @@ export const getQueryId = (query: firebase.firestore.Query): string => {
   throw new Error('Unknown query type');
 };
 
-export const getQueryPath = (query: firebase.firestore.Query): string => {
+export const getQueryPath = (query: Query): string => {
   if (query.path) {
     // $FlowFixMe Undocumented key/value
     return query.path;
@@ -54,7 +54,7 @@ export const getQueryPath = (query: firebase.firestore.Query): string => {
   throw new Error('Unknown query type');
 };
 
-export const getCollectionQueryPath = (query: firebase.firestore.Query): string => {
+export const getCollectionQueryPath = (query: Query): string => {
   const fullPath = getQueryPath(query);
   const pathParts = fullPath.split('/');
   return pathParts.length % 2 ? fullPath : fullPath.replace(/(\/[^\/]+)$/, '');

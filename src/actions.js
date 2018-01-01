@@ -1,8 +1,9 @@
 // @flow
-import firebase from 'firebase';
 import { getQueryId } from './modules/query';
 import { createActionType, createRequestActionTypes } from './modules/actionTypes';
 
+import type { Auth } from 'firebase/auth';
+import type { Firestore, Query } from 'firebase/firestore';
 import type { DispatchAPI } from 'redux';
 import type { StoreState } from './reducers';
 import type { FluxStandardAction } from './reducers/flux-standard-action';
@@ -12,7 +13,7 @@ type $ThunkAction<R> = (dispatch: Dispatch, getState: GetState, args: ThunkArgs)
 type ThunkAction = $ThunkAction<any>;
 type Dispatch = (action: Action | ThunkAction) => any;
 type GetState = () => StoreState;
-type ThunkArgs = { auth: firebase.auth.Auth, firestore: firebase.firestore.Firestore };
+type ThunkArgs = { auth: Auth, firestore: Firestore };
 
 export const COLLECTIONS = {
   MODIFY: createActionType('collections/MODIFY'),
@@ -34,7 +35,7 @@ const _handleReceiveSnapshot = (dispatch: Dispatch, query, queryId) => (snapshot
   dispatch({ type: QUERIES.SUCCESS, payload: snapshot, meta: { queryId } });
 };
 
-export const addQuery = (query: firebase.firestore.Query, queryIdPrefix: string = '') => (
+export const addQuery = (query: Query, queryIdPrefix: string = '') => (
   dispatch: Dispatch,
   getState: GetState
 ): Promise<any> => {
@@ -56,7 +57,7 @@ export const addQuery = (query: firebase.firestore.Query, queryIdPrefix: string 
     });
 };
 
-export const removeQuery = (query: firebase.firestore.Query, queryIdPrefix: string = '') => ({
+export const removeQuery = (query: Query, queryIdPrefix: string = '') => ({
   type: QUERIES.REMOVE,
   payload: query,
   meta: { queryId: `${queryIdPrefix}${getQueryId(query)}` }
@@ -72,7 +73,7 @@ const createAddListenerAction = (query, queryIdPrefix: string = '') => ({
   payload: query
 });
 
-export const addListener = (query: firebase.firestore.Query, queryIdPrefix: string = '') => (
+export const addListener = (query: Query, queryIdPrefix: string = '') => (
   dispatch: Dispatch,
   getState: GetState
 ): Promise<any> => {
@@ -91,7 +92,7 @@ export const addListener = (query: firebase.firestore.Query, queryIdPrefix: stri
   });
 };
 
-export const removeListener = (query: firebase.firestore.Query, queryIdPrefix: string = '') => (
+export const removeListener = (query: Query, queryIdPrefix: string = '') => (
   dispatch: Dispatch,
   getState: GetState
 ): Promise<any> => {

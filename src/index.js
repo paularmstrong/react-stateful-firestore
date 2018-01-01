@@ -10,9 +10,11 @@ import { setUser, unsetUser } from './actions';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 
+import type { App } from 'firebase/app';
+
 let store;
 
-export default function init(app: firebase.app.App, userCollection?: string): Promise<any> {
+export default function init(app: App, userCollection?: string): Promise<any> {
   if (store) {
     throw new Error('Cannot initialize store more than once.');
   }

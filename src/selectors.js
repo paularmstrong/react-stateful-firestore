@@ -1,9 +1,10 @@
 // @flow
-import firebase from 'firebase';
 import { FetchStatus } from './modules/fetchStatus';
 import { getCollectionQueryPath, getQueryId, getQueryPath } from './modules/query';
 import { addListener, addQuery } from './actions';
 
+import type { Auth } from 'firebase/auth';
+import type { Query } from 'firebase/firestore';
 import type { Store } from 'redux';
 import type { StoreState } from './reducers';
 
@@ -14,7 +15,7 @@ const emptyArray = [];
 const singleUndefined = { fetchStatus: FetchStatus.NONE, doc: undefined };
 const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
 
-export const initSelect = (store: Store<*, *, *>) => (query: firebase.firestore.Query) => () => {
+export const initSelect = (store: Store<*, *, *>) => (query: Query) => () => {
   store.dispatch(addQuery(query));
   store.dispatch(addListener(query));
 
@@ -37,7 +38,7 @@ export const initSelect = (store: Store<*, *, *>) => (query: firebase.firestore.
   };
 };
 
-export const initSelectAuth = (auth: firebase.auth.Auth, userCollection: string = 'users') => () => (
+export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => () => (
   state: StoreState,
   props: Props
 ) => {

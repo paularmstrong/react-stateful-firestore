@@ -4,8 +4,10 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 import { any } from 'prop-types';
 
+import type { App } from 'firebase/app';
+
 type FirestoreContext = {
-  app: firebase.app.App,
+  app: App,
   select: () => any,
   selectAuth: () => any,
   store: any

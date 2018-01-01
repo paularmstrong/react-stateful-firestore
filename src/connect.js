@@ -1,8 +1,8 @@
 // @flow
-import firebase from 'firebase';
 import React, { Component } from 'react';
 import { object } from 'prop-types';
 
+import type firebase from 'firebase';
 import type { StoreState } from './reducers';
 import type { Store } from 'redux';
 
@@ -24,9 +24,7 @@ export const connect = (
         auth: firebase.auth.Auth,
         firestore: firebase.firestore.Firestore,
         messaging: firebase.messaging.Messaging,
-        select: (
-          ref: typeof firebase.firestore.DocumentReference | typeof firebase.firestore.CollectionReference
-        ) => any,
+        select: (ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference) => any,
         selectAuth: () => any,
         storage: firebase.storage.Storage,
         store: Store<StoreState, *>

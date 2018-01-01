@@ -2,8 +2,7 @@
 import { getCollectionQueryPath } from '../modules/query';
 import { COLLECTIONS } from '../actions';
 
-import type { Query } from 'firebase/firestore';
-import typeof { DocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import type { DocumentSnapshot, QuerySnapshot, Query } from 'firebase/firestore';
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type State = {

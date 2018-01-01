@@ -426,7 +426,7 @@ declare interface $npm$firebase$firestore$DocumentChange {
   type: 'added' | 'removed' | 'modified';
 }
 
-declare interface $npm$firebase$firestore$DocumentReference {
+declare class $npm$firebase$firestore$DocumentReference {
   firestore: $npm$firebase$firestore$Firestore;
   id: string;
   parent: typeof $npm$firebase$firestore$CollectionReference;
@@ -444,7 +444,7 @@ declare interface $npm$firebase$firestore$DocumentReference {
   update(...args: any): Promise<void>;
 }
 
-declare interface $npm$firebase$firestore$DocumentSnapshot {
+declare class $npm$firebase$firestore$DocumentSnapshot {
   data(): {};
   get(fieldpath: typeof $npm$firebase$firestore$FieldPath): any;
   exists: boolean;
@@ -487,7 +487,7 @@ declare class $npm$firebase$firestore$GeoPoint {
   longitude: number;
 }
 
-declare interface $npm$firebase$firestore$QuerySnapshot {
+declare class $npm$firebase$firestore$QuerySnapshot {
   docChanges(): Array<$npm$firebase$firestore$DocumentChange>;
   docs: Array<$npm$firebase$firestore$DocumentSnapshot>;
   empty: boolean;
@@ -687,8 +687,8 @@ declare module 'firebase' {
       Blob: $npm$firebase$firestore$Blob,
       CollectionReference: typeof $npm$firebase$firestore$CollectionReference,
       DocumentChange: $npm$firebase$firestore$DocumentChange,
-      DocumentReference: $npm$firebase$firestore$DocumentReference,
-      DocumentSnapshot: $npm$firebase$firestore$DocumentSnapshot,
+      DocumentReference: typeof $npm$firebase$firestore$DocumentReference,
+      DocumentSnapshot: typeof $npm$firebase$firestore$DocumentSnapshot,
       FieldPath: typeof $npm$firebase$firestore$FieldPath,
       FieldValue: $npm$firebase$firestore$FieldValue,
       Firestore: typeof $npm$firebase$firestore$Firestore,
@@ -696,7 +696,7 @@ declare module 'firebase' {
       GeoPoint: typeof $npm$firebase$firestore$GeoPoint,
       Query: typeof $npm$firebase$firestore$Query,
       QueryListenOptions: $npm$firebase$firestore$QueryListenOptions,
-      QuerySnapshot: $npm$firebase$firestore$QuerySnapshot,
+      QuerySnapshot: typeof $npm$firebase$firestore$QuerySnapshot,
       Settings: $npm$firebase$firestore$Settings,
       SnapshotMetadata: $npm$firebase$firestore$SnapshotMetadata,
       Transaction: $npm$firebase$firestore$Transaction,
@@ -763,8 +763,8 @@ declare module 'firebase/firestore' {
     Blob: $npm$firebase$firestore$Blob,
     CollectionReference: typeof $npm$firebase$firestore$CollectionReference,
     DocumentChange: $npm$firebase$firestore$DocumentChange,
-    DocumentReference: $npm$firebase$firestore$DocumentReference,
-    DocumentSnapshot: $npm$firebase$firestore$DocumentSnapshot,
+    DocumentReference: typeof $npm$firebase$firestore$DocumentReference,
+    DocumentSnapshot: typeof $npm$firebase$firestore$DocumentSnapshot,
     FieldPath: typeof $npm$firebase$firestore$FieldPath,
     FieldValue: $npm$firebase$firestore$FieldValue,
     Firestore: typeof $npm$firebase$firestore$Firestore,
@@ -772,7 +772,7 @@ declare module 'firebase/firestore' {
     GeoPoint: typeof $npm$firebase$firestore$GeoPoint,
     Query: typeof $npm$firebase$firestore$Query,
     QueryListenOptions: $npm$firebase$firestore$QueryListenOptions,
-    QuerySnapshot: $npm$firebase$firestore$QuerySnapshot,
+    QuerySnapshot: typeof $npm$firebase$firestore$QuerySnapshot,
     Settings: $npm$firebase$firestore$Settings,
     SnapshotMetadata: $npm$firebase$firestore$SnapshotMetadata,
     Transaction: $npm$firebase$firestore$Transaction,
