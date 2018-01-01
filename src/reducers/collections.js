@@ -1,8 +1,9 @@
 // @flow
-import firebase from 'firebase';
 import { getCollectionQueryPath } from '../modules/query';
 import { COLLECTIONS } from '../actions';
 
+import type { Query } from 'firebase/firestore';
+import typeof { DocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type State = {
@@ -10,9 +11,9 @@ export type State = {
 };
 
 type Meta = {
-  query: firebase.firestore.Query
+  query: Query
 };
-type Payload = typeof firebase.firestore.DocumentSnapshot | typeof firebase.firestore.QuerySnapshot;
+type Payload = DocumentSnapshot | QuerySnapshot;
 type Action = FluxStandardAction<string, Payload, Meta>;
 
 const defaultState = {};

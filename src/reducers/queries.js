@@ -1,8 +1,8 @@
 // @flow
-import firebase from 'firebase';
 import { QUERIES } from '../actions';
 import { FetchStatus } from '../modules/fetchStatus';
 
+import typeof { DocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type State = {
@@ -25,7 +25,7 @@ const defaultQueryState = {
 
 const sortChanges = (a: { newIndex: number }, b: { newIndex: number }) => a.newIndex - b.newIndex;
 
-const updateMultiple = (state: State, payload: typeof firebase.firestore.QuerySnapshot, queryId: string): State => {
+const updateMultiple = (state: State, payload: QuerySnapshot, queryId: string): State => {
   const documentIds = payload.docChanges.sort(sortChanges).reduce(
     (memo, change) => {
       const { doc, type: changeType, newIndex } = change;
@@ -59,7 +59,7 @@ const updateMultiple = (state: State, payload: typeof firebase.firestore.QuerySn
   };
 };
 
-const updateOne = (state: State, payload: typeof firebase.firestore.DocumentSnapshot, queryId: string): State => {
+const updateOne = (state: State, payload: DocumentSnapshot, queryId: string): State => {
   return {
     ...state,
     [queryId]: {
