@@ -4,11 +4,11 @@ exports[`selectors select dispatches adding the query and listener 1`] = `
 Array [
   Object {
     "meta": Object {
-      "queryId": "foo",
+      "queryId": "tacos",
     },
     "payload": Object {
       "get": [Function],
-      "id": "foo",
+      "id": "tacos",
       "onSnapshot": [MockFunction] {
         "calls": Array [
           Array [
@@ -16,16 +16,36 @@ Array [
           ],
         ],
       },
-      "path": "foo",
+      "path": "tacos",
     },
     "type": "firestore/queries/REQUEST",
   },
   Object {
     "meta": Object {
-      "queryId": "foo",
+      "queryId": "tacos",
     },
     "payload": undefined,
     "type": "firestore/listeners/ADD",
   },
 ]
+`;
+
+exports[`selectors select returns fetchStatus and user doc 1`] = `
+Object {
+  "doc": Object {
+    "id": "123",
+    "type": "delicious",
+  },
+  "fetchStatus": "loaded",
+}
+`;
+
+exports[`selectors selectAuth returns fetchStatus and user doc 1`] = `
+Object {
+  "doc": Object {
+    "id": "123",
+    "type": "delicious",
+  },
+  "fetchStatus": "loaded",
+}
 `;

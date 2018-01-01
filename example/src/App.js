@@ -12,12 +12,12 @@ class App extends Component {
   };
 
   render() {
-    const { authUser, items } = this.props;
+    const { auth, authUser, items } = this.props;
     return (
       <div>
-        {authUser.authUser ? (
+        {auth.currentUser ? (
           <div>
-            Logged in as: {authUser.authUser.displayName} <span onClick={this._handleSignOut}>Sign Out</span>
+            Logged in as: {auth.currentUser.displayName} <span onClick={this._handleSignOut}>Sign Out</span>
           </div>
         ) : (
           <Link to="/login">Log in</Link>

@@ -5,12 +5,13 @@ import { FetchStatus } from '../modules/fetchStatus';
 import type { DocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import type { FluxStandardAction } from './flux-standard-action';
 
+export type QueryState = {
+  documentIds: Array<string>,
+  error?: Error,
+  fetchStatus: $Values<typeof FetchStatus>
+};
 export type State = {
-  [queryId: string]: {
-    documentIds: Array<string>,
-    error?: Error,
-    fetchStatus: $Values<typeof FetchStatus>
-  }
+  [queryId: string]: QueryState
 };
 
 type QueryMeta = { queryId: string };

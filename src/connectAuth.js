@@ -22,14 +22,14 @@ const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponen
     static displayName = 'ConnectAuth';
 
     componentWillUpdate(nextProps: Props) {
-      const { authUser: prevAuth } = this.props;
-      const { authUser: nextAuth } = nextProps;
-      if (nextAuth.authUser !== prevAuth.authUser || nextAuth.user !== prevAuth.user) {
+      const { authUser: prevAuthUser } = this.props;
+      const { authUser: nextAuthUser } = nextProps;
+      if (prevAuthUser !== nextAuthUser) {
         const action =
-          prevAuth.authUser && !nextAuth.authUser
+          prevAuthUser.doc && !nextAuthUser.doc
             ? 'signout'
-            : !prevAuth.authUser && nextAuth.authUser ? 'signin' : undefined;
-        handleAuthStatus({ ...nextAuth, action }, nextProps);
+            : !prevAuthUser.doc && nextAuthUser.doc ? 'signin' : undefined;
+        handleAuthStatus({ ...nextAuthUser, action }, nextProps);
       }
     }
 

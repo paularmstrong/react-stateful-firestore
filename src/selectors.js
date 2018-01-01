@@ -8,6 +8,7 @@ import type { Auth } from 'firebase/auth';
 import type { Query } from 'firebase/firestore';
 import type { Store } from 'redux';
 import type { StoreState } from './reducers';
+import type { QueryState } from './reducers/queries';
 
 type Props = {};
 
@@ -46,26 +47,31 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
   };
 };
 
-const loggedOut = { authUser: undefined, fetchStatus: FetchStatus.NONE, user: undefined };
 export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => {
+  const loggedOut = { fetchStatus: FetchStatus.NONE, doc: undefined };
   const selectUid = (state) => state.auth.uid;
   const selectStoreQuery = createSelector(
     [selectUid, selectQueries],
     (uid, queries) => queries[`auth|${userCollection}/${uid}`]
   );
   const selectUsersCollection = (state) => state.collections[userCollection];
-  const selectUser = createSelector(
+  const selectUserData = createSelector(
     [selectUid, selectUsersCollection],
     (uid, users) => (users ? users[uid] : undefined)
   );
+  const selectCurrentUser = (state) => (auth.currentUser ? JSON.stringify(auth.currentUser.toJSON()) : undefined);
 
-  const selector = createSelector([selectUid, selectStoreQuery, selectUser], (uid, storeQuery, user) => {
+  const selector = createSelector([selectUid, selectCurrentUser, selectStoreQuery, selectUserData], (
+    uid: string,
+    currentUser?: string, // used for selector cache busting. Use auth.currentUser with connectAuth.
+    storeQuery?: QueryState,
+    doc: {}
+  ) => {
     if (!uid) {
       return loggedOut;
     }
-    const authUser = auth.currentUser;
     const fetchStatus = storeQuery ? storeQuery.fetchStatus : FetchStatus.LOADED;
-    return { authUser, fetchStatus, user };
+    return { fetchStatus, doc };
   });
 
   return () => selector;
