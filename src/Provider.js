@@ -18,6 +18,11 @@ type Props = {
   firestore: FirestoreContext
 };
 
+/**
+ * Provide your firebase instance to the application
+ * @class Provider
+ * @param {Object} firebase The react-stateful-firebase instance
+ */
 export default class Provider extends Component<Props> {
   static childContextTypes = {
     firebase: any

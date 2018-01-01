@@ -15,6 +15,11 @@ type Props = {
 
 type AuthStatusHandler = (auth: { ...AuthUser, action?: 'signin' | 'signout' }, props: any) => void;
 
+/**
+ * Connect a React component to your Firebase & Firestore auth instance
+ * @param  {function} handleAuthStatus  Function to handle authentication changes
+ * @return {function}
+ */
 const connectAuth = (handleAuthStatus: AuthStatusHandler, WrappedLoadingComponent?: React$ComponentType<*>) => (
   WrappedComponent: React$ComponentType<*>
 ): React$ComponentType<*> => {

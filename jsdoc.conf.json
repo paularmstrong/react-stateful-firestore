@@ -1,0 +1,11 @@
+{
+  "opts": {
+    "destination": "./docs/"
+  },
+  "plugins": ["node_modules/jsdoc-babel"],
+  "babel": {
+    "extensions": ["js", "es6", "jsx", "jsdoc"],
+    "presets": ["env", "flow"],
+    "plugins": ["transform-class-properties"]
+  }
+}
