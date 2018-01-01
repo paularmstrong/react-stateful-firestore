@@ -1,4 +1,5 @@
 // @flow
+import { createSelector } from 'reselect';
 import { FetchStatus } from './modules/fetchStatus';
 import { getCollectionQueryPath, getQueryId, getQueryPath } from './modules/query';
 import { addListener, addQuery } from './actions';
@@ -15,40 +16,57 @@ const emptyArray = [];
 const singleUndefined = { fetchStatus: FetchStatus.NONE, doc: undefined };
 const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
 
-export const initSelect = (store: Store<*, *, *>) => (query: Query) => () => {
-  store.dispatch(addQuery(query));
-  store.dispatch(addListener(query));
+const selectQueries = (state) => state.queries;
 
+export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
   const queryId = getQueryId(query);
   const queryPath = getQueryPath(query);
   const collectionQueryPath = getCollectionQueryPath(query);
   const isDocument = collectionQueryPath !== queryPath;
 
-  return (state: StoreState, props: Props) => {
-    const storeQuery = state.queries[queryId];
-    if (storeQuery) {
+  const selectStoreQuery = (state) => state.queries[queryId];
+  const selectCollection = (state) => state.collections[collectionQueryPath];
+
+  const selector = createSelector([selectStoreQuery, selectCollection], (storeQuery, collection) => {
+    if (storeQuery && collection) {
       const { documentIds, fetchStatus } = storeQuery;
-      const collection = state.collections[collectionQueryPath];
-      if (collection && documentIds) {
+      if (documentIds) {
         const docs = documentIds.map((id: string) => collection[id]).filter(Boolean);
         return isDocument ? { fetchStatus, doc: docs[0] } : { fetchStatus, docs };
       }
     }
     return isDocument ? singleUndefined : collectionUndefiend;
+  });
+
+  return () => {
+    store.dispatch(addQuery(query));
+    store.dispatch(addListener(query));
+
+    return selector;
   };
 };
 
-export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => () => (
-  state: StoreState,
-  props: Props
-) => {
-  const { uid } = state.auth;
-  if (!uid) {
-    return { authUser: undefined, fetchStatus: FetchStatus.NONE, user: undefined };
-  }
-  const query = state.queries[`auth|${userCollection}/${uid}`];
-  const fetchStatus = query ? query.fetchStatus : FetchStatus.LOADED;
-  const user = state.collections[userCollection] ? state.collections[userCollection][uid] : undefined;
-  const authUser = auth.currentUser;
-  return { authUser, fetchStatus, user };
+const loggedOut = { authUser: undefined, fetchStatus: FetchStatus.NONE, user: undefined };
+export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => {
+  const selectUid = (state) => state.auth.uid;
+  const selectStoreQuery = createSelector(
+    [selectUid, selectQueries],
+    (uid, queries) => queries[`auth|${userCollection}/${uid}`]
+  );
+  const selectUsersCollection = (state) => state.collections[userCollection];
+  const selectUser = createSelector(
+    [selectUid, selectUsersCollection],
+    (uid, users) => (users ? users[uid] : undefined)
+  );
+
+  const selector = createSelector([selectUid, selectStoreQuery, selectUser], (uid, storeQuery, user) => {
+    if (!uid) {
+      return loggedOut;
+    }
+    const authUser = auth.currentUser;
+    const fetchStatus = storeQuery ? storeQuery.fetchStatus : FetchStatus.LOADED;
+    return { authUser, fetchStatus, user };
+  });
+
+  return () => selector;
 };
