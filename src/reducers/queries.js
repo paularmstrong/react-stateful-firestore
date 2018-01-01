@@ -23,7 +23,8 @@ const defaultQueryState = {
   fetchStatus: FetchStatus.NONE
 };
 
-const sortChanges = (a: { newIndex: number }, b: { newIndex: number }) => a.newIndex - b.newIndex;
+const sortChanges = (a: { doc: { newIndex: number } }, b: { doc: { newIndex: number } }) =>
+  a.doc.newIndex - b.doc.newIndex;
 
 const updateMultiple = (state: State, payload: QuerySnapshot, queryId: string): State => {
   const documentIds = payload.docChanges.sort(sortChanges).reduce(
@@ -31,6 +32,7 @@ const updateMultiple = (state: State, payload: QuerySnapshot, queryId: string): 
       const { doc, type: changeType, newIndex } = change;
       switch (changeType) {
         case 'added':
+        case 'modified':
           if (memo.indexOf(doc.id) !== -1) {
             return memo;
           }
@@ -38,14 +40,13 @@ const updateMultiple = (state: State, payload: QuerySnapshot, queryId: string): 
             return [doc.id];
           }
           memo.splice(newIndex, 0, doc.id);
-        case 'modified':
           return memo;
         case 'removed':
           memo.splice(newIndex, 1);
           return memo;
-        // no default
+        default:
+          return memo;
       }
-      return memo;
     },
     [...state[queryId].documentIds]
   );
