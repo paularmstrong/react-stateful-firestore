@@ -1,0 +1,9 @@
+cache: yarn
+language: node_js
+node_js:
+  - "8"
+script:
+  - yarn format:check
+  - yarn flow check
+  - yarn test
+  - yarn build

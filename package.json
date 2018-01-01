@@ -48,7 +48,8 @@
     "build": "npm-run-all build:cjs build:es build:flow",
     "build:cjs": "NODE_ENV=production rollup -c",
     "build:es": "babel src/*.js src/**/*.js -d build/ --sourceMaps inline --source-maps true --ignore '/__tests__/'",
-    "build:flow": "flow-copy-source -i **/__tests__/** src build/src",
+    "build:flow": "flow-copy-source -i **__tests__/*.js src build/src",
+    "format:check": "find src -name '*.js' | xargs prettier --debug-check",
     "prebuild": "rimraf build",
     "precommit": "flow && lint-staged",
     "test": "BABEL_ENV=development jest"
