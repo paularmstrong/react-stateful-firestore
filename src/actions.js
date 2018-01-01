@@ -53,7 +53,7 @@ export const addQuery = (query: Query, queryIdPrefix: string = '') => (
     .get()
     .then(_handleReceiveSnapshot(dispatch, query, queryId))
     .catch((error) => {
-      dispatch({ error: true, type: QUERIES.FAILED, payload: error, meta });
+      dispatch({ error: true, type: QUERIES.FAILURE, payload: error, meta });
     });
 };
 
@@ -101,10 +101,12 @@ export const removeListener = (query: Query, queryIdPrefix: string = '') => (
 
   if (listeners[queryId]) {
     listeners[queryId].unsubscribe();
-    return dispatch({
-      type: LISTENERS.REMOVE,
-      meta: { queryId }
-    });
+    return Promise.resolve(
+      dispatch({
+        type: LISTENERS.REMOVE,
+        meta: { queryId }
+      })
+    );
   }
 
   return Promise.resolve();

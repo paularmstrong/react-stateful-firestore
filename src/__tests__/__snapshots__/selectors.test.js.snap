@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectors select dispatches adding the query and listener 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": Object {
+      "get": [Function],
+      "id": "foo",
+      "onSnapshot": [MockFunction] {
+        "calls": Array [
+          Array [
+            [Function],
+          ],
+        ],
+      },
+      "path": "foo",
+    },
+    "type": "firestore/queries/REQUEST",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": undefined,
+    "type": "firestore/listeners/ADD",
+  },
+]
+`;

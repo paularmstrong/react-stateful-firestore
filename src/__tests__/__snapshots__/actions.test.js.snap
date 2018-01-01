@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Actions addListener starts the listener, then adds it 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "query": Object {
+        "get": [Function],
+        "id": "foo",
+        "onSnapshot": [Function],
+        "path": "foo",
+      },
+    },
+    "payload": Object {},
+    "type": "firestore/collections/MODIFY_ONE",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": Object {},
+    "type": "firestore/queries/SUCCESS",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": undefined,
+    "type": "firestore/listeners/ADD",
+  },
+]
+`;
+
+exports[`Actions addQuery adds the query and executes it 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": Object {
+      "get": [Function],
+      "id": "foo",
+      "onSnapshot": [Function],
+      "path": "foo",
+    },
+    "type": "firestore/queries/REQUEST",
+  },
+  Object {
+    "meta": Object {
+      "query": Object {
+        "get": [Function],
+        "id": "foo",
+        "onSnapshot": [Function],
+        "path": "foo",
+      },
+    },
+    "payload": Object {},
+    "type": "firestore/collections/MODIFY_ONE",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "foo",
+    },
+    "payload": Object {},
+    "type": "firestore/queries/SUCCESS",
+  },
+]
+`;
+
+exports[`Actions setUser adds queries and listeners 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "payload": Object {
+      "get": [Function],
+      "id": "users/123",
+      "onSnapshot": [Function],
+      "path": "users/123",
+    },
+    "type": "firestore/queries/REQUEST",
+  },
+  Object {
+    "meta": Object {
+      "query": Object {
+        "get": [Function],
+        "id": "users/123",
+        "onSnapshot": [Function],
+        "path": "users/123",
+      },
+    },
+    "payload": Object {},
+    "type": "firestore/collections/MODIFY_ONE",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "payload": Object {},
+    "type": "firestore/queries/SUCCESS",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "payload": undefined,
+    "type": "firestore/listeners/ADD",
+  },
+  Object {
+    "payload": Object {
+      "uid": "123",
+    },
+    "type": "firestore/auth/CHANGE",
+  },
+  Object {
+    "meta": Object {
+      "query": Object {
+        "get": [Function],
+        "id": "users/123",
+        "onSnapshot": [Function],
+        "path": "users/123",
+      },
+    },
+    "payload": Object {},
+    "type": "firestore/collections/MODIFY_ONE",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "payload": Object {},
+    "type": "firestore/queries/SUCCESS",
+  },
+]
+`;
+
+exports[`Actions unsetUser removes queries, listeners, and the user from the collection 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "payload": Object {
+      "get": [Function],
+      "id": "users/123",
+      "onSnapshot": [Function],
+      "path": "users/123",
+    },
+    "type": "firestore/queries/REMOVE",
+  },
+  Object {
+    "meta": Object {
+      "queryId": "auth|users/123",
+    },
+    "type": "firestore/listeners/REMOVE",
+  },
+  Object {
+    "meta": Object {
+      "query": Object {
+        "get": [Function],
+        "id": "users/123",
+        "onSnapshot": [Function],
+        "path": "users/123",
+      },
+    },
+    "payload": Object {
+      "id": "123",
+    },
+    "type": "firestore/collections/REMOVE",
+  },
+  Object {
+    "type": "firestore/auth/CHANGE",
+  },
+]
+`;
