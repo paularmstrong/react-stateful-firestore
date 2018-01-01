@@ -12,6 +12,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^22.0.4",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-syntax-flow": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -22,6 +23,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.0",
     "flow-bin": "^0.62.0",
+    "flow-copy-source": "^1.2.1",
     "flow-typed": "^2.2.3",
     "husky": "^0.14.3",
     "jest": "^22.0.4",
@@ -30,6 +32,7 @@
     "prettier": "^1.9.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2",
     "rollup": "^0.53.2",
     "rollup-plugin-babel": "^3.0.3",
@@ -42,19 +45,26 @@
     "react": "~16.0.0"
   },
   "scripts": {
-    "build": "npm-run-all build:cjs build:es",
-    "build:cjs": "rollup -c",
-    "build:es": "babel src/*.js src/**/*.js -d build/ --sourceMaps inline --source-maps true",
-    "prebuild:es": "rimraf build/src",
-    "precommit": "flow && lint-staged"
+    "build": "npm-run-all build:cjs build:es build:flow",
+    "build:cjs": "NODE_ENV=production rollup -c",
+    "build:es": "babel src/*.js src/**/*.js -d build/ --sourceMaps inline --source-maps true --ignore '/__tests__/'",
+    "build:flow": "flow-copy-source -i **/__tests__/** src build/src",
+    "prebuild": "rimraf build",
+    "precommit": "flow && lint-staged",
+    "test": "jest"
   },
   "lint-staged": {
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "dependencies": {
-    "babel-plugin-external-helpers": "^6.22.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
+  },
+  "jest": {
+    "rootDir": "src/",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }

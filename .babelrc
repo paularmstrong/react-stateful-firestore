@@ -1,12 +1,24 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "flow"
-  ],
-  "plugins": [
-    "syntax-flow",
-    "transform-object-rest-spread",
-    "transform-class-properties",
-    "transform-react-jsx"
-  ]
+  "ignore": ["node_module/**"],
+  "env": {
+    "production": {
+      "presets": [["env", { "modules": false }], "flow"],
+      "plugins": [
+        "external-helpers",
+        "syntax-flow",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "transform-react-jsx"
+      ]
+    },
+    "development": {
+      "presets": ["env", "flow"],
+      "plugins": [
+        "syntax-flow",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "transform-react-jsx"
+      ]
+    }
+  }
 }
