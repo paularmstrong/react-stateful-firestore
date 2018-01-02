@@ -17,10 +17,10 @@ const app = firebase.initializeApp({
 
 const rootEl = document.getElementById('root');
 
-initFirestore(app).then((firestore) => {
+initFirestore(app).then((store) => {
   if (rootEl) {
     ReactDOM.render(
-      <Provider firestore={firestore}>
+      <Provider store={store}>
         <Router>
           <Route component={App} />
         </Router>

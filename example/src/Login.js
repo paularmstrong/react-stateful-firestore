@@ -5,7 +5,7 @@ import { object } from 'prop-types';
 class Login extends Component {
   static propTypes = {
     auth: object,
-    authUser: object,
+    authUserDoc: object,
     history: object.isRequired
   };
 
@@ -60,9 +60,9 @@ class Login extends Component {
 
 const Loading = () => <div>Loading…</div>;
 
-export default connectAuth((auth, props) => {
-  // Already signed in. Kick back to main page
-  if (auth.authUser) {
+export default connectAuth(({ action, auth }, props) => {
+  // Already signed in or currently signing in. Kick back to main page
+  if (auth.currentUser || action === 'signin') {
     props.history.replace('/');
   }
 }, Loading)(Login);

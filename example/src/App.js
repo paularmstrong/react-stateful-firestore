@@ -45,12 +45,12 @@ class App extends Component {
 
 const Loading = () => <div>Loading…</div>;
 
-export default connectAuth((auth, props) => {
-  if (auth.action === 'signout') {
+export default connectAuth(({ action }, props) => {
+  if (action === 'signout') {
     props.history.push('/login');
   }
 }, Loading)(
-  connect(({ select }, firestore) => ({
+  connect((select, firestore) => ({
     items: select(firestore.collection('items'))
   }))(App)
 );
