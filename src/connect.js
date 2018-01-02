@@ -25,7 +25,6 @@ export const connect = (
         firestore: firebase.firestore.Firestore,
         messaging: firebase.messaging.Messaging,
         select: (ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference) => any,
-        selectAuth: () => any,
         storage: firebase.storage.Storage,
         store: Store<StoreState, *>
       }
@@ -43,8 +42,8 @@ export const connect = (
     }
 
     componentWillMount() {
-      const { firestore, select, selectAuth, store } = this.context.firebase;
-      const querySelectors = getSelectors({ select, selectAuth }, firestore, this.props);
+      const { firestore, select, store } = this.context.firebase;
+      const querySelectors = getSelectors(select, firestore, this.props);
       this._selectors = Object.keys(querySelectors).reduce((memo, propName: string) => {
         memo[propName] = querySelectors[propName]();
         return memo;

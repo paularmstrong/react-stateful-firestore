@@ -15,7 +15,7 @@ type FirestoreContext = {
 
 type Props = {
   children: React$Node,
-  firestore: FirestoreContext
+  store: FirestoreContext
 };
 
 export default class Provider extends Component<Props> {
@@ -24,7 +24,7 @@ export default class Provider extends Component<Props> {
   };
 
   getChildContext() {
-    const { app, select, selectAuth, store } = this.props.firestore;
+    const { app, select, selectAuth, store } = this.props.store;
     return {
       firebase: {
         app,

@@ -74,5 +74,5 @@ export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => 
     return { fetchStatus, doc };
   });
 
-  return () => selector;
+  return selector;
 };
