@@ -6,6 +6,14 @@
   "module": "build/src",
   "files": ["build/*", "LICENSE", "README.md"],
   "author": "Paul Armstrong <paul@spaceyak.com>",
+  "bugs": {
+    "url": "https://github.com/paularmstrong/react-stateful-firestore/issues"
+  },
+  "homepage": "https://github.com/paularmstrong/react-stateful-firestore",
+  "repository": {
+    "url": "https://github.com/paularmstrong/react-stateful-firestore.git",
+    "type": "git"
+  },
   "license": "MIT",
   "private": false,
   "devDependencies": {
