@@ -4,7 +4,7 @@
   "description": "Firestore query and data management for React",
   "main": "build",
   "module": "build/src",
-  "files": ["build/*", "lib/*", "LICENSE", "README.md"],
+  "files": ["build/*", "LICENSE", "README.md"],
   "author": "Paul Armstrong <paul@spaceyak.com>",
   "license": "MIT",
   "private": false,
