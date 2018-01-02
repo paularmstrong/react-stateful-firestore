@@ -100,11 +100,11 @@ describe('connectAuth', () => {
     wrapper.update();
     expect(handler).toHaveBeenCalledWith(
       {
-        auth: mockFirebase.auth,
         action: 'signin',
         doc: userDoc,
         fetchStatus: FetchStatus.LOADED
       },
+      mockFirebase.auth,
       { foo: 'bar' }
     );
   });

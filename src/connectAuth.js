@@ -15,7 +15,7 @@ type State = {
   fetchStatus: $Values<typeof FetchStatus>
 };
 
-type AuthStatusHandler = ({ action?: 'signin' | 'signout', auth: firebase.auth.Auth, ...State }, props: any) => void;
+type AuthStatusHandler = ({ action?: 'signin' | 'signout', ...State }, auth: firebase.auth.Auth, props: any) => void;
 
 const emptyObject = {};
 
@@ -65,7 +65,7 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
       if (handleAuthStatus && prevState !== nextState) {
         const action =
           prevState.doc && !nextState.doc ? 'signout' : !prevState.doc && nextState.doc ? 'signin' : undefined;
-        handleAuthStatus({ auth, action, doc: nextState.doc, fetchStatus: nextState.fetchStatus }, nextProps);
+        handleAuthStatus({ action, doc: nextState.doc, fetchStatus: nextState.fetchStatus }, auth, nextProps);
       }
     }
 

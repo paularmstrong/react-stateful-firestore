@@ -2,6 +2,7 @@
 import connect from './connect';
 import connectAuth from './connectAuth';
 import Provider from './Provider';
+import { FetchStatus } from './modules/fetchStatus';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import reducers from './reducers';
@@ -58,4 +59,4 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   });
 }
 
-export { connect, connectAuth, Provider };
+export { connect, connectAuth, FetchStatus, Provider };

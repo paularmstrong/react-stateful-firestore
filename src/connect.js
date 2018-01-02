@@ -9,12 +9,13 @@ import type { Store } from 'redux';
 type Props = {};
 type State = { [key: string]: any };
 
+type Select = (ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference) => any;
 type SelectorQueryMap = {
   [key: string]: () => (state: any, props: Props) => any
 };
 
 export const connect = (
-  getSelectors: (select: any, firestore: firebase.firestore.Firestore, props: Props) => SelectorQueryMap
+  getSelectors: (select: Select, firestore: firebase.firestore.Firestore, props: Props) => SelectorQueryMap
 ) => (WrappedComponent: React$ComponentType<*>): React$ComponentType<*> => {
   return class extends Component<Props, State> {
     _unsubscribe: null | (() => void);
@@ -24,7 +25,7 @@ export const connect = (
         auth: firebase.auth.Auth,
         firestore: firebase.firestore.Firestore,
         messaging: firebase.messaging.Messaging,
-        select: (ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference) => any,
+        select: Select,
         storage: firebase.storage.Storage,
         store: Store<StoreState, *>
       }
