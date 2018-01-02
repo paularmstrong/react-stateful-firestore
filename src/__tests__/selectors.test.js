@@ -48,13 +48,13 @@ describe('selectors', () => {
   describe('selectAuth', () => {
     test('returns fetchStatus and user doc', () => {
       let currentUserJSON = { uid: '123' };
-      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } }, 'tacos')();
+      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } }, 'tacos');
       expect(selectData(mockState)).toMatchSnapshot();
     });
 
     test('memoizes the response', () => {
       let currentUserJSON = { uid: '123' };
-      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } }, 'tacos')();
+      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } }, 'tacos');
       const firstState = { ...mockState, collections: { ...mockState.collections, foobar: {} } };
       const secondState = { ...mockState, collections: { ...mockState.collections, foobar: { '456': {} } } };
       expect(selectData(firstState)).toBe(selectData(secondState));
@@ -64,7 +64,7 @@ describe('selectors', () => {
       const toJSON = jest.fn(() => {
         uid: '123';
       });
-      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } }, 'tacos')();
+      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } }, 'tacos');
       const firstData = selectData(mockState);
       const secondState = { ...mockState };
       toJSON.mockReturnValueOnce({ uid: '123', foo: 'bar' });

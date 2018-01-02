@@ -17,7 +17,7 @@ const emptyArray = [];
 const singleUndefined = { fetchStatus: FetchStatus.NONE, doc: undefined };
 const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
 
-const selectQueries = (state) => state.queries;
+const selectQueries = (state: StoreState) => state.queries;
 
 export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
   const queryId = getQueryId(query);
@@ -25,8 +25,8 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
   const collectionQueryPath = getCollectionQueryPath(query);
   const isDocument = collectionQueryPath !== queryPath;
 
-  const selectStoreQuery = (state) => state.queries[queryId];
-  const selectCollection = (state) => state.collections[collectionQueryPath];
+  const selectStoreQuery = (state: StoreState) => state.queries[queryId];
+  const selectCollection = (state: StoreState) => state.collections[collectionQueryPath];
 
   const selector = createSelector([selectStoreQuery, selectCollection], (storeQuery, collection) => {
     if (storeQuery && collection) {
@@ -49,17 +49,18 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
 
 export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => {
   const loggedOut = { fetchStatus: FetchStatus.NONE, doc: undefined };
-  const selectUid = (state) => state.auth.uid;
+  const selectUid = (state: StoreState) => state.auth.uid;
   const selectStoreQuery = createSelector(
     [selectUid, selectQueries],
     (uid, queries) => queries[`auth|${userCollection}/${uid}`]
   );
-  const selectUsersCollection = (state) => state.collections[userCollection];
+  const selectUsersCollection = (state: StoreState) => state.collections[userCollection];
   const selectUserData = createSelector(
     [selectUid, selectUsersCollection],
     (uid, users) => (users ? users[uid] : undefined)
   );
-  const selectCurrentUser = (state) => (auth.currentUser ? JSON.stringify(auth.currentUser.toJSON()) : undefined);
+  const selectCurrentUser = (state: StoreState) =>
+    auth.currentUser ? JSON.stringify(auth.currentUser.toJSON()) : undefined;
 
   const selector = createSelector([selectUid, selectCurrentUser, selectStoreQuery, selectUserData], (
     uid: string,

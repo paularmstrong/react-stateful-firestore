@@ -47,7 +47,7 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
     }
 
     componentWillMount() {
-      const { selectAuth, store } = this.context.firebase;
+      const { store } = this.context.firebase;
       this._unsubscribe = store.subscribe(this._handleState);
       this._handleState();
     }
