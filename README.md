@@ -12,6 +12,12 @@ Provides bindings for authentication, Firestore, messaging, and storage data in 
 
 ## Quick Start
 
+```sh
+npm install react-stateful-firestore
+# or
+yarn add react-stateful-firestore
+```
+
 #### Set up Firebase
 
 First import Firebase, Firestore, and initialize your Firebase app.
