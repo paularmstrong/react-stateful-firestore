@@ -10,6 +10,7 @@ type FirestoreContext = {
   app: App,
   select: () => any,
   selectAuth: () => any,
+  selectStorage: () => any,
   store: any
 };
 
@@ -24,7 +25,7 @@ export default class Provider extends Component<Props> {
   };
 
   getChildContext() {
-    const { app, select, selectAuth, store } = this.props.store;
+    const { app, select, selectAuth, selectStorage, store } = this.props.store;
     return {
       firebase: {
         app,
@@ -33,6 +34,7 @@ export default class Provider extends Component<Props> {
         messaging: firebase.messaging(app),
         select,
         selectAuth,
+        selectStorage,
         storage: firebase.storage(app),
         store
       }

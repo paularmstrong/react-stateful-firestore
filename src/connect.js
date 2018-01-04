@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from 'react';
 import { object } from 'prop-types';
 
@@ -9,14 +10,28 @@ import type { Store } from 'redux';
 type Props = {};
 type State = { [key: string]: any };
 
-type Select = (ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference) => any;
+type Select = (
+  ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference | firebase.storage.Reference,
+  options: {}
+) => any;
+type SelectFirestore = (
+  ref: firebase.firestore.DocumentReference | firebase.firestore.CollectionReference,
+  options: {}
+) => any;
+type SelectStorage = (ref: firebase.storage.Reference, options: {}) => any;
 type SelectorQueryMap = {
   [key: string]: () => (state: any, props: Props) => any
 };
 
-export const connect = (
-  getSelectors: (select: Select, firestore: firebase.firestore.Firestore, props: Props) => SelectorQueryMap
-) => (WrappedComponent: React$ComponentType<*>): React$ComponentType<*> => {
+type Apis = {
+  auth: firebase.auth.Auth,
+  firestore: firebase.firestore.Firestore,
+  storage: firebase.storage.Storage
+};
+
+export const connect = (getSelectors: (select: Select, apis: Apis, props: Props) => SelectorQueryMap) => (
+  WrappedComponent: React$ComponentType<*>
+): React$ComponentType<*> => {
   return class extends Component<Props, State> {
     _unsubscribe: null | (() => void);
     _selectors: { [key: string]: (state: any, props: Props) => any };
@@ -26,6 +41,7 @@ export const connect = (
         firestore: firebase.firestore.Firestore,
         messaging: firebase.messaging.Messaging,
         select: Select,
+        selectStorage: SelectStorage,
         storage: firebase.storage.Storage,
         store: Store<StoreState, *>
       }
@@ -43,8 +59,17 @@ export const connect = (
     }
 
     componentWillMount() {
-      const { firestore, select, store } = this.context.firebase;
-      const querySelectors = getSelectors(select, firestore, this.props);
+      const { auth, firestore, select, selectStorage, storage, store } = this.context.firebase;
+      const selector = (ref, options) => {
+        if ('firestore' in ref) {
+          return select(ref, options);
+        } else if ('storage' in ref) {
+          // $FlowFixMe
+          return selectStorage(ref, options);
+        }
+        throw new Error('Invalid object sent to select.');
+      };
+      const querySelectors = getSelectors(selector, { auth, firestore, storage }, this.props);
       this._selectors = Object.keys(querySelectors).reduce((memo, propName: string) => {
         memo[propName] = querySelectors[propName]();
         return memo;

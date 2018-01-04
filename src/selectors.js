@@ -2,10 +2,11 @@
 import { createSelector } from 'reselect';
 import { FetchStatus } from './modules/fetchStatus';
 import { getCollectionQueryPath, getQueryId, getQueryPath } from './modules/query';
-import { addListener, addQuery } from './actions';
+import { addListener, addQuery, getStorageDownloadUrl, getStorageMetadata } from './actions';
 
 import type { Auth } from 'firebase/auth';
 import type { Query } from 'firebase/firestore';
+import type { Reference, Storage } from 'firebase/storage';
 import type { Store } from 'redux';
 import type { StoreState } from './reducers';
 import type { QueryState } from './reducers/queries';
@@ -14,8 +15,16 @@ type SelectOptions = {
   subscribe?: boolean
 };
 
+type StorageOptions = {
+  metadata?: boolean
+};
+
 const selectOptionDefaults = {
   subscribe: true
+};
+
+const stroageOptionDefaults = {
+  metadata: false
 };
 
 const emptyArray = [];
@@ -89,4 +98,17 @@ export const initSelectAuth = (auth: Auth, userCollection?: string) => {
   });
 
   return selector;
+};
+
+export const initSelectStorage = (store: Store<*, *, *>) => (ref: Reference, storageOptions?: StorageOptions) => {
+  const options = {
+    ...stroageOptionDefaults,
+    ...storageOptions
+  };
+  const actionCreator = options.metadata ? getStorageMetadata : getStorageDownloadUrl;
+  const selector = (state: StoreState) => state.storage[ref.fullPath];
+  return () => {
+    store.dispatch(actionCreator(ref));
+    return selector;
+  };
 };

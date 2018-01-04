@@ -4,6 +4,7 @@ import { createActionType, createRequestActionTypes } from './modules/actionType
 
 import type { Auth } from 'firebase/auth';
 import type { Firestore, Query } from 'firebase/firestore';
+import type { Reference } from 'firebase/storage';
 import type { DispatchAPI } from 'redux';
 import type { StoreState } from './reducers';
 import type { FluxStandardAction } from './reducers/flux-standard-action';
@@ -146,4 +147,40 @@ export const unsetUser = (uid?: string, userCollection?: string) => (
     dispatch({ type: AUTH.CHANGE });
   }
   return Promise.resolve();
+};
+
+export const STORAGE = {
+  URL: createRequestActionTypes('storage/downloadUrl'),
+  METADATA: createRequestActionTypes('storage/metadata')
+};
+
+export const getStorageDownloadUrl = (reference: Reference) => (
+  dispatch: Dispatch,
+  getState: GetState
+): Promise<any> => {
+  const meta = { reference };
+  dispatch({ type: STORAGE.URL.REQUEST, meta });
+  return reference
+    .getDownloadURL()
+    .then((url) => {
+      return dispatch({ type: STORAGE.URL.SUCCESS, payload: url, meta });
+    })
+    .catch((error) => {
+      dispatch({ error: true, type: STORAGE.URL.FAILURE, payload: error, meta });
+      throw error;
+    });
+};
+
+export const getStorageMetadata = (reference: Reference) => (dispatch: Dispatch, getState: GetState): Promise<any> => {
+  const meta = { reference };
+  dispatch({ type: STORAGE.METADATA.REQUEST, meta });
+  return reference
+    .getMetadata()
+    .then((data) => {
+      return dispatch({ type: STORAGE.METADATA.SUCCESS, payload: data, meta });
+    })
+    .catch((error) => {
+      dispatch({ error: true, type: STORAGE.METADATA.FAILURE, payload: error, meta });
+      throw error;
+    });
 };

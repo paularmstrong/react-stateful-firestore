@@ -6,7 +6,7 @@ import { FetchStatus } from './modules/fetchStatus';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import reducers from './reducers';
-import { initSelect, initSelectAuth } from './selectors';
+import { initSelect, initSelectAuth, initSelectStorage } from './selectors';
 import { setUser, unsetUser } from './actions';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
@@ -37,6 +37,7 @@ export default function init(app: App, userCollection?: string): Promise<any> {
 
   const select = initSelect(store);
   const selectAuth = initSelectAuth(auth, userCollection);
+  const selectStorage = initSelectStorage(store);
 
   const currentUser = auth.currentUser;
   let currentUid;
@@ -48,7 +49,7 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged((newUser?: any) => {
       store.dispatch(setUser(newUser, userCollection)).then(() => {
-        resolve({ app, select, selectAuth, store });
+        resolve({ app, select, selectAuth, selectStorage, store });
       });
       if (newUser) {
         currentUid = newUser.uid;

@@ -98,7 +98,7 @@ This component is necessary to use [`connect`](#connectgetselectors) and [`conne
 
 ### connect(getSelectors)
 
-This is a higher order component creator function used to connect your components to data from your Firestore. It accepts a single argument, [getSelectors](#getselectorsselect-firestore-props).
+This is a higher order component creator function used to connect your components to data from your Firestore. It accepts a single argument, [getSelectors](#getselectorsselect-apis-props).
 
 Aside from your defined props in `getSelectors`, `connect` will also provide the following props to your component:
 
@@ -127,6 +127,11 @@ class Article extends Component {
       fetchStatus: oneOf(['none', 'loading', 'loaded', 'failed']).isRequired, // $Values<typeof FetchStatus>
       docs: arrayOf(object) // NOTE: `select(firestore.collection(...))` will provide `docs` (plural)
     }).isRequired,
+    promoImage: shape({
+      error: any,
+      fetchStatus: oneOf(['none', 'loading', 'loaded', 'failed']).isRequired, // $Values<typeof FetchStatus>,
+      downloadUrl: string
+    }),
     // Automatically provided by `connect()`
     auth: object.isRequired,
     firestore: object.isRequired,
@@ -137,38 +142,49 @@ class Article extends Component {
   render() { ... }
 }
 
-export default connect((select, firestore, props) => ({
+export default connect((select, { firestore, storage }, props) => ({
   article: select(firestore.doc(`articles/${props.articleId}`)),
-  comments: select(firestore.collection('comments').where('articleId', '==', props.articleId))
+  comments: select(firestore.collection('comments').where('articleId', '==', props.articleId)),
+  promoImage: select(storage.ref('promoimage.jpg'))
 }))(Article);
 
 // render(<ConnectedArticle articleId="123" />);
 ```
 
-#### getSelectors(select, firestore, props)
+#### getSelectors(select, apis, props)
 
 A function that returns a map of data selectors to props supplied to your final rendered component.
 
-|         | argument    | type                         | description                                 |
-| ------- | ----------- | ---------------------------- | ------------------------------------------- |
-| @param  | `select`    | [Select](#select)            | A function that selects data from Firestore |
-| @param  | `firestore` | firebase.firestore.Firestore | Your app's Firestore instance               |
-| @param  | `props`     | object                       | The props provided to your component        |
-| @return |             | object                       | A map of selectors to prop names            |
+|         | argument | type                      | description                                                |
+| ------- | -------- | ------------------------- | ---------------------------------------------------------- |
+| @param  | `select` | [Select](#select)         | A function that selects data from Firestore and/or Storage |
+| @param  | `apis`   | [SelectApis](#selectapis) | Your app's firebase APIs                                   |
+| @param  | `props`  | object                    | The props provided to your component                       |
+| @return |          | object                    | A map of selectors to prop names                           |
 
 #### Select
 
-|         | argument  | type                                                                           | description                                               | example                                                           |
-| ------- | --------- | ------------------------------------------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------- |
-| @param  | `ref`     | firebase.firestore.DocumentReference or firebase.firestore.CollectionReference | A Document or Collection reference to your Firestore data | `firestore.doc('users/123');` or `firestore.collection('users');` |
-| @param  | `options` | [SelectOptions](#selectoptions)?                                               | Options for the selector                                  | `{ subscribe: false }`                                            |
-| @return |           | function                                                                       |                                                           |                                                                   |
+|         | argument  | type                                                                                                       | description                                                                                | example                                                                                     |
+| ------- | --------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| @param  | `ref`     | firebase.firestore.DocumentReference or firebase.firestore.CollectionReference of firebase.storage.Storage | A Document or Collection reference to your Firestore data or a reference to a Storage item | `firestore.doc('users/123');` or `firestore.collection('users');` or `storage.ref('thing')` |
+| @param  | `options` | [SelectOptions](#selectoptions)?                                                                           | Options for the selector                                                                   | `{ subscribe: false }` or `{ metadata: true }`                                              |
+| @return |           | function                                                                                                   |                                                                                            |                                                                                             |
+
+#### SelectApis
+
+| prop        | type                         | description                            |
+| ----------- | ---------------------------- | -------------------------------------- |
+| `auth`      | firebase.auth.Auth           | Your app's firebase.auth instance      |
+| `firestore` | firebase.firestore.Firestore | Your app's firebase.firestore instance |
+| `messaging` | firebase.messaging.Messaging | Your app's firebase.messaging          |
+| `storage`   | firebase.storage.Storage     | Your app's firebase.storage            |
 
 #### SelectOptions
 
-| prop        | type    | default | description                                                                                                                                |
-| ----------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `subscribe` | boolean | `true`  | Add a subscription/listener for changes. When `true` (default), we will add a listener for database changes and update them as they happen |
+| prop        | type    | default | description                                                                                                                                                           |
+| ----------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `subscribe` | boolean | `true`  | Firestore-only. Add a subscription/listener for Firestore changes. When `true` (default), we will add a listener for database changes and update them as they happen. |
+| `metadata`  | boolean | `false` | Storage-only. Get the full metadata of the stored object.                                                                                                             |
 
 ### connectAuth(handleAuthState)
 
