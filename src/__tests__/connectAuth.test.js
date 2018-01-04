@@ -1,7 +1,6 @@
 import configureStore from 'redux-mock-store';
 import connectAuth from '../connectAuth';
 import { FetchStatus } from '../modules/fetchStatus';
-import { initSelectAuth } from '../selectors';
 import { shallow } from 'enzyme';
 import React, { Component } from 'react';
 

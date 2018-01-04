@@ -7,12 +7,12 @@ import { Link, Route, Switch } from 'react-router-dom';
 class App extends Component {
   static propTypes = {
     auth: object,
-    authUser: object,
+    authUserDoc: object,
     history: object.isRequired
   };
 
   render() {
-    const { auth, authUser, items } = this.props;
+    const { auth, authUserDoc, items } = this.props;
     return (
       <div>
         {auth.currentUser ? (

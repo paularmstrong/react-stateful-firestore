@@ -40,6 +40,13 @@ Object {
 }
 `;
 
+exports[`selectors selectAuth if no userCollection provided, returns empty object 1`] = `
+Object {
+  "doc": Object {},
+  "fetchStatus": "loaded",
+}
+`;
+
 exports[`selectors selectAuth returns fetchStatus and user doc 1`] = `
 Object {
   "doc": Object {

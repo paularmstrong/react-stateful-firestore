@@ -46,6 +46,12 @@ describe('selectors', () => {
   });
 
   describe('selectAuth', () => {
+    test('if no userCollection provided, returns empty object', () => {
+      let currentUserJSON = { uid: '123' };
+      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } });
+      expect(selectData(mockState)).toMatchSnapshot();
+    });
+
     test('returns fetchStatus and user doc', () => {
       let currentUserJSON = { uid: '123' };
       const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON: () => currentUserJSON } }, 'tacos');
@@ -65,6 +71,17 @@ describe('selectors', () => {
         uid: '123';
       });
       const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } }, 'tacos');
+      const firstData = selectData(mockState);
+      const secondState = { ...mockState };
+      toJSON.mockReturnValueOnce({ uid: '123', foo: 'bar' });
+      expect(firstData).not.toBe(selectData(secondState));
+    });
+
+    test('current user busts memoization even if no userCollection provided', () => {
+      const toJSON = jest.fn(() => {
+        uid: '123';
+      });
+      const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } });
       const firstData = selectData(mockState);
       const secondState = { ...mockState };
       toJSON.mockReturnValueOnce({ uid: '123', foo: 'bar' });

@@ -55,7 +55,7 @@ initReactFirestore(app).then((store) => {
 
 ## API
 
-Default Export: [`initReactFirestore`](#initreactfirestoreapp)
+Default Export: [`initReactFirestore`](#initreactfirestoreapp-usercollection)
 Other Exports:
 
 * [`connect`](#connectgetselectors)
@@ -67,14 +67,15 @@ Other Exports:
 import initReactFirestore, { connect, connectAuth, FetchStatus, Provider } from 'react-stateful-firestore';
 ```
 
-### initReactFirestore(app)
+### initReactFirestore(app, userCollection?)
 
 This method initializes the backing store and authentication handling for your firebase/firestore application.
 
-|         | argument | type             | description                                                            |
-| ------- | -------- | ---------------- | ---------------------------------------------------------------------- |
-| @param  | `app`    | firebase.app.App | Your firebase app, created with `firebase.initializeApp`               |
-| @return |          | `Promise<store>` | A promise providing a store object to send to the `Provider` component |
+|         | argument         | type             | description                                                                                                                                                                                    |
+| ------- | ---------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| @param  | `app`            | firebase.app.App | Your firebase app, created with `firebase.initializeApp`                                                                                                                                       |
+| @param  | `userCollection` | string?          | Optional. The collection name of where you store extra data about users. If provided, data will appear on the `authUserDoc` property provided by [`connectAuth`](#connectauthhandleauthstate). |
+| @return |                  | `Promise<store>` | A promise providing a store object to send to the `Provider` component                                                                                                                         |
 
 **Example:**
 
@@ -93,7 +94,7 @@ initReactFirestore(app).then((store) => {
 
 ### &lt;Provider store={store}&gt;
 
-This component is necessary to use [`connect`](#connectgetselectors) and [`connectAuth`](#connectauthhandleauthstate) within your application. It provides your Firebase app's instance and special data selectors used internally. It must be provided the `store` prop, as returned in the promise from [`initReactFirestore`](#initreactfirestoreapp).
+This component is necessary to use [`connect`](#connectgetselectors) and [`connectAuth`](#connectauthhandleauthstate) within your application. It provides your Firebase app's instance and special data selectors used internally. It must be provided the `store` prop, as returned in the promise from [`initReactFirestore`](#initreactfirestoreapp-usercollection).
 
 ### connect(getSelectors)
 
@@ -168,21 +169,21 @@ This is a higher order component creator function used to connect your component
 
 `connectAuth` can be used as a gating function to require an authentication status to determine what should be rendered and how to handle authentication state changes.
 
-| prop              | type                         | description                                                               |
-| ----------------- | ---------------------------- | ------------------------------------------------------------------------- |
-| `authUserDoc`     | object                       | The document from firestore including extra data about the logged in user |
-| `authFetchStatus` | [FetchStatus](#fetchstatus)  | The fetch status of the user doc                                          |
-| `auth`            | firebase.auth.Auth           | Your app's firebase.auth instance                                         |
-| `firestore`       | firebase.firestore.Firestore | Your app's firebase.firestore instance                                    |
-| `messaging`       | firebase.messaging.Messaging | Your app's firebase.messaging                                             |
-| `storage`         | firebase.storage.Storage     | Your app's firebase.storage                                               |
+| prop              | type                         | description                                                                                                                                                                                                                                                                                           |
+| ----------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `authUserDoc`     | object?                      | If not logged in: `undefined`<br>If no `userCollection` provided to [`initReactFirestore`](#initreactfirestoreapp-usercollection): empty object (`{}`)<br>Otherwise when `userCollection` is provided: an object containing the data from the document at `${userCollection}/${auth.currentUser.uid}` |
+| `authFetchStatus` | [FetchStatus](#fetchstatus)  | The fetch status of the user doc                                                                                                                                                                                                                                                                      |
+| `auth`            | firebase.auth.Auth           | Your app's firebase.auth instance                                                                                                                                                                                                                                                                     |
+| `firestore`       | firebase.firestore.Firestore | Your app's firebase.firestore instance                                                                                                                                                                                                                                                                |
+| `messaging`       | firebase.messaging.Messaging | Your app's firebase.messaging                                                                                                                                                                                                                                                                         |
+| `storage`         | firebase.storage.Storage     | Your app's firebase.storage                                                                                                                                                                                                                                                                           |
 
 ```js
 import { connectAuth } from 'react-stateful-firestore';
 
 class LoginPage extends Component {
   static propTypes = {
-    authUserDoc: object, // `undefined` if not logged-in
+    authUserDoc: object,
     authFetchStatus: oneOf(['none', 'loading', 'loaded', 'failed']).isRequired,
     // Also provided by `connectAuth()`
     auth: object.isRequired, // Use this to access the auth user, `auth.currentUser`

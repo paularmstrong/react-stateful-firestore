@@ -80,6 +80,12 @@ describe('Actions', () => {
 
   describe('setUser', () => {
     test('adds queries and listeners', () => {
+      return store.dispatch(Actions.setUser({ uid: '123' }, 'users')).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+      });
+    });
+
+    test('triggers only auth change action if no collection', () => {
       return store.dispatch(Actions.setUser({ uid: '123' })).then(() => {
         expect(store.getActions()).toMatchSnapshot();
       });
@@ -89,6 +95,13 @@ describe('Actions', () => {
   describe('unsetUser', () => {
     test('removes queries, listeners, and the user from the collection', () => {
       store = mockStore({ ...defaultState, listeners: { 'auth|users/123': { unsubscribe: jest.fn() } } });
+      return store.dispatch(Actions.unsetUser('123', 'users')).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+      });
+    });
+
+    test('triggers only auth change action if no collection', () => {
+      store = mockStore(defaultState);
       return store.dispatch(Actions.unsetUser('123')).then(() => {
         expect(store.getActions()).toMatchSnapshot();
       });

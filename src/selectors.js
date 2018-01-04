@@ -13,6 +13,7 @@ import type { QueryState } from './reducers/queries';
 type Props = {};
 
 const emptyArray = [];
+const emptyObject = {};
 
 const singleUndefined = { fetchStatus: FetchStatus.NONE, doc: undefined };
 const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
@@ -42,19 +43,19 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
   return () => {
     store.dispatch(addQuery(query));
     store.dispatch(addListener(query));
-
     return selector;
   };
 };
 
-export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => {
+export const initSelectAuth = (auth: Auth, userCollection?: string) => {
   const loggedOut = { fetchStatus: FetchStatus.NONE, doc: undefined };
+  const selectCollectionName = () => userCollection;
   const selectUid = (state: StoreState) => state.auth.uid;
   const selectStoreQuery = createSelector(
-    [selectUid, selectQueries],
-    (uid, queries) => queries[`auth|${userCollection}/${uid}`]
+    [selectCollectionName, selectUid, selectQueries],
+    (uid, queries) => (userCollection ? queries[`auth|${userCollection}/${uid}`] : undefined)
   );
-  const selectUsersCollection = (state: StoreState) => state.collections[userCollection];
+  const selectUsersCollection = (state: StoreState) => (userCollection ? state.collections[userCollection] : undefined);
   const selectUserData = createSelector(
     [selectUid, selectUsersCollection],
     (uid, users) => (users ? users[uid] : undefined)
@@ -72,7 +73,10 @@ export const initSelectAuth = (auth: Auth, userCollection: string = 'users') => 
       return loggedOut;
     }
     const fetchStatus = storeQuery ? storeQuery.fetchStatus : FetchStatus.LOADED;
-    return { fetchStatus, doc };
+    return {
+      fetchStatus,
+      doc: userCollection ? doc : {} // use a new object if no userCollection to cache bust
+    };
   });
 
   return selector;

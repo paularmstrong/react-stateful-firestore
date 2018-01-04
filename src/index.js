@@ -42,18 +42,18 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   let currentUid;
   if (currentUser) {
     currentUid = currentUser.uid;
-    store.dispatch(setUser(currentUser));
+    store.dispatch(setUser(currentUser, userCollection));
   }
 
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged((newUser?: any) => {
-      store.dispatch(setUser(newUser)).then(() => {
+      store.dispatch(setUser(newUser, userCollection)).then(() => {
         resolve({ app, select, selectAuth, store });
       });
       if (newUser) {
         currentUid = newUser.uid;
       } else {
-        store.dispatch(unsetUser(currentUid));
+        store.dispatch(unsetUser(currentUid, userCollection));
       }
     });
   });

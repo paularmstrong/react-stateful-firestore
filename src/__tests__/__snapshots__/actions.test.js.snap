@@ -135,6 +135,17 @@ Array [
 ]
 `;
 
+exports[`Actions setUser triggers only auth change action if no collection 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "uid": "123",
+    },
+    "type": "firestore/auth/CHANGE",
+  },
+]
+`;
+
 exports[`Actions unsetUser removes queries, listeners, and the user from the collection 1`] = `
 Array [
   Object {
@@ -169,6 +180,14 @@ Array [
     },
     "type": "firestore/collections/REMOVE",
   },
+  Object {
+    "type": "firestore/auth/CHANGE",
+  },
+]
+`;
+
+exports[`Actions unsetUser triggers only auth change action if no collection 1`] = `
+Array [
   Object {
     "type": "firestore/auth/CHANGE",
   },
