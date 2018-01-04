@@ -10,7 +10,13 @@ import type { Store } from 'redux';
 import type { StoreState } from './reducers';
 import type { QueryState } from './reducers/queries';
 
-type Props = {};
+type SelectOptions = {
+  subscribe?: boolean
+};
+
+const selectOptionDefaults = {
+  subscribe: true
+};
 
 const emptyArray = [];
 const emptyObject = {};
@@ -20,7 +26,8 @@ const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
 
 const selectQueries = (state: StoreState) => state.queries;
 
-export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
+export const initSelect = (store: Store<*, *, *>) => (query: Query, selectOptions?: SelectOptions) => {
+  const options = { ...selectOptionDefaults, ...selectOptions };
   const queryId = getQueryId(query);
   const queryPath = getQueryPath(query);
   const collectionQueryPath = getCollectionQueryPath(query);
@@ -42,7 +49,9 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query) => {
 
   return () => {
     store.dispatch(addQuery(query));
-    store.dispatch(addListener(query));
+    if (options.subscribe) {
+      store.dispatch(addListener(query));
+    }
     return selector;
   };
 };

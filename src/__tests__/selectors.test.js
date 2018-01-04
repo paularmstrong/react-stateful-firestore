@@ -43,6 +43,13 @@ describe('selectors', () => {
       const secondState = { ...mockState, collections: { ...firstState.collections, foobar: { '456': {} } } };
       expect(selectData(firstState)).toBe(selectData(secondState));
     });
+
+    test('allows not adding a subscription listener', () => {
+      const selector = initSelect(store)(query, { subscribe: false });
+      const selectData = selector();
+      expect(selectData(mockState)).toMatchSnapshot();
+      expect(store.getActions()).toMatchSnapshot();
+    });
   });
 
   describe('selectAuth', () => {

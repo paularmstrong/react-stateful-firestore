@@ -158,10 +158,17 @@ A function that returns a map of data selectors to props supplied to your final 
 
 #### Select
 
-|         | argument | type                                                                           | description                                               | example                                                           |
-| ------- | -------- | ------------------------------------------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------- |
-| @param  | `ref`    | firebase.firestore.DocumentReference or firebase.firestore.CollectionReference | A Document or Collection reference to your Firestore data | `firestore.doc('users/123');` or `firestore.collection('users');` |
-| @return |          | function                                                                       |                                                           |                                                                   |
+|         | argument  | type                                                                           | description                                               | example                                                           |
+| ------- | --------- | ------------------------------------------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------- |
+| @param  | `ref`     | firebase.firestore.DocumentReference or firebase.firestore.CollectionReference | A Document or Collection reference to your Firestore data | `firestore.doc('users/123');` or `firestore.collection('users');` |
+| @param  | `options` | [SelectOptions](#selectoptions)?                                               | Options for the selector                                  | `{ subscribe: false }`                                            |
+| @return |           | function                                                                       |                                                           |                                                                   |
+
+#### SelectOptions
+
+| prop        | type    | default | description                                                                                                                                |
+| ----------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `subscribe` | boolean | `true`  | Add a subscription/listener for changes. When `true` (default), we will add a listener for database changes and update them as they happen |
 
 ### connectAuth(handleAuthState)
 

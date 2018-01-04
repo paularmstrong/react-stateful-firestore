@@ -1,5 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`selectors select allows not adding a subscription listener 1`] = `
+Object {
+  "docs": Array [],
+  "fetchStatus": "none",
+}
+`;
+
+exports[`selectors select allows not adding a subscription listener 2`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "tacos",
+    },
+    "payload": Object {
+      "get": [Function],
+      "id": "tacos",
+      "onSnapshot": [MockFunction] {
+        "calls": Array [
+          Array [
+            [Function],
+          ],
+          Array [
+            [Function],
+          ],
+          Array [
+            [Function],
+          ],
+        ],
+      },
+      "path": "tacos",
+    },
+    "type": "firestore/queries/REQUEST",
+  },
+]
+`;
+
 exports[`selectors select dispatches adding the query and listener 1`] = `
 Array [
   Object {
