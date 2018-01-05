@@ -22,6 +22,7 @@
     "build:flow": "flow-copy-source -i **__tests__/*.js src build/src",
     "format:check": "find src -name '*.js' | xargs prettier --debug-check",
     "lint": "eslint src/ --fix",
+    "lint:check": "eslint src/",
     "prebuild": "rimraf build",
     "precommit": "flow && lint-staged",
     "test": "BABEL_ENV=development jest"
