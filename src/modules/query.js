@@ -9,13 +9,13 @@ type RelationalFilter = {
   value: Value
 };
 
+// $FlowFixMe Undocumented key/value
+const pathToString = (path: FieldPath) => path.segments.join('/');
+
 const filterToString = (filter: RelationalFilter) => {
   const { field, op, value } = filter;
   return `${pathToString(field)}${op.name}${value.toString()}`;
 };
-
-// $FlowFixMe Undocumented key/value
-const pathToString = (path: FieldPath) => path.segments.join('/');
 
 export const getQueryId = (query: Query): string => {
   // $FlowFixMe Undocumented key/value
@@ -57,5 +57,5 @@ export const getQueryPath = (query: Query): string => {
 export const getCollectionQueryPath = (query: Query): string => {
   const fullPath = getQueryPath(query);
   const pathParts = fullPath.split('/');
-  return pathParts.length % 2 ? fullPath : fullPath.replace(/(\/[^\/]+)$/, '');
+  return pathParts.length % 2 ? fullPath : fullPath.replace(/(\/[^/]+)$/, '');
 };

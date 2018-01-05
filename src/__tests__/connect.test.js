@@ -1,7 +1,6 @@
 import configureStore from 'redux-mock-store';
 import connect from '../connect';
 import { FetchStatus } from '../modules/fetchStatus';
-import { initSelectAuth } from '../selectors';
 import { shallow } from 'enzyme';
 import React, { Component } from 'react';
 
@@ -29,11 +28,11 @@ describe('connect', () => {
   let context;
 
   beforeEach(() => {
-    mockSelect = jest.fn(() => () => (state, props) => ({
+    mockSelect = jest.fn(() => () => () => ({
       fetchStatus: FetchStatus.NONE,
       doc: undefined
     }));
-    mockSelectStorage = jest.fn(() => () => (state, props) => ({
+    mockSelectStorage = jest.fn(() => () => () => ({
       fetchStatus: FetchStatus.NONE,
       downloadUrl: undefined
     }));
@@ -77,7 +76,7 @@ describe('connect', () => {
     const things = { fetchStatus: FetchStatus.LOADING, docs: [] };
     const selector = jest.fn(() => things);
     mockSelect.mockReturnValue(() => selector);
-    const ConnectedComponent = connect((select, { firestore }, props) => ({
+    const ConnectedComponent = connect((select, { firestore }) => ({
       things: select(firestore.collection('things'))
     }))(MockComponent);
     const wrapper = shallow(<ConnectedComponent />, { context });
@@ -93,7 +92,7 @@ describe('connect', () => {
     const userOptions = { a: 1 };
     const thingOptions = { b: 2 };
     const imageOptions = { c: 3 };
-    const ConnectedComponent = connect((select, { firestore, storage }, props) => ({
+    const ConnectedComponent = connect((select, { firestore, storage }) => ({
       user: select(firestore.doc('user'), userOptions),
       things: select(firestore.collection('things'), thingOptions),
       image: select(storage.ref('image'), imageOptions)

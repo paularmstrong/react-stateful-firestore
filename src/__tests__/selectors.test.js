@@ -75,7 +75,7 @@ describe('selectors', () => {
 
     test('current user busts memoization', () => {
       const toJSON = jest.fn(() => {
-        uid: '123';
+        '123';
       });
       const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } }, 'tacos');
       const firstData = selectData(mockState);
@@ -86,7 +86,7 @@ describe('selectors', () => {
 
     test('current user busts memoization even if no userCollection provided', () => {
       const toJSON = jest.fn(() => {
-        uid: '123';
+        '123';
       });
       const selectData = initSelectAuth({ currentUser: { uid: '123', toJSON } });
       const firstData = selectData(mockState);

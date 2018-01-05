@@ -40,7 +40,7 @@ export const connect = (getSelectors: (select: Select, apis: Apis, props: Props)
         auth: firebase.auth.Auth,
         firestore: firebase.firestore.Firestore,
         messaging: firebase.messaging.Messaging,
-        select: Select,
+        select: SelectFirestore,
         selectStorage: SelectStorage,
         storage: firebase.storage.Storage,
         store: Store<StoreState, *>
@@ -60,8 +60,9 @@ export const connect = (getSelectors: (select: Select, apis: Apis, props: Props)
 
     componentWillMount() {
       const { auth, firestore, select, selectStorage, storage, store } = this.context.firebase;
-      const selector = (ref, options) => {
+      const selector: Select = (ref, options) => {
         if ('firestore' in ref) {
+          // $FlowFixMe
           return select(ref, options);
         } else if ('storage' in ref) {
           // $FlowFixMe

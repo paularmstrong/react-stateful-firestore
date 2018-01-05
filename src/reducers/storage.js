@@ -25,7 +25,7 @@ const defaultState = {};
 export function reducer(state: State = defaultState, action: Action): State {
   switch (action.type) {
     case STORAGE.URL.REQUEST: {
-      const { meta: { reference }, payload } = action;
+      const { meta: { reference } } = action;
       return {
         ...state,
         [reference.fullPath]: { ...state[reference.fullPath], fetchStatus: FetchStatus.LOADING }
@@ -40,8 +40,8 @@ export function reducer(state: State = defaultState, action: Action): State {
       };
     }
 
-    case STORAGE.URL.REQUEST: {
-      const { meta: { reference }, payload } = action;
+    case STORAGE.URL.FAILURE: {
+      const { meta: { reference } } = action;
       return {
         ...state,
         [reference.fullPath]: { ...state[reference.fullPath], fetchStatus: FetchStatus.FAILED }
@@ -49,7 +49,7 @@ export function reducer(state: State = defaultState, action: Action): State {
     }
 
     case STORAGE.METADATA.REQUEST: {
-      const { meta: { reference }, payload } = action;
+      const { meta: { reference } } = action;
       return {
         ...state,
         [reference.fullPath]: { ...state[reference.fullPath], fetchStatus: FetchStatus.LOADING }
@@ -69,8 +69,8 @@ export function reducer(state: State = defaultState, action: Action): State {
       };
     }
 
-    case STORAGE.METADATA.REQUEST: {
-      const { meta: { reference }, payload } = action;
+    case STORAGE.METADATA.FAILURE: {
+      const { meta: { reference } } = action;
       return {
         ...state,
         [reference.fullPath]: { ...state[reference.fullPath], fetchStatus: FetchStatus.FAILED }

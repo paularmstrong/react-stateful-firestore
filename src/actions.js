@@ -5,7 +5,6 @@ import { createActionType, createRequestActionTypes } from './modules/actionType
 import type { Auth } from 'firebase/auth';
 import type { Firestore, Query } from 'firebase/firestore';
 import type { Reference } from 'firebase/storage';
-import type { DispatchAPI } from 'redux';
 import type { StoreState } from './reducers';
 import type { FluxStandardAction } from './reducers/flux-standard-action';
 
@@ -41,7 +40,7 @@ export const addQuery = (query: Query, queryIdPrefix: string = '') => (
   getState: GetState
 ): Promise<any> => {
   const queryId = `${queryIdPrefix}${getQueryId(query)}`;
-  const { listeners, queries } = getState();
+  const { queries } = getState();
   if (queryId in queries) {
     return Promise.resolve();
   }
@@ -68,11 +67,6 @@ export const LISTENERS = {
   ADD: createActionType('listeners/ADD'),
   REMOVE: createActionType('listeners/REMOVE')
 };
-const createAddListenerAction = (query, queryIdPrefix: string = '') => ({
-  type: LISTENERS.ADD,
-  meta: { query: `${queryIdPrefix}${getQueryId(query)}` },
-  payload: query
-});
 
 export const addListener = (query: Query, queryIdPrefix: string = '') => (
   dispatch: Dispatch,
@@ -84,8 +78,7 @@ export const addListener = (query: Query, queryIdPrefix: string = '') => (
     return Promise.resolve();
   }
 
-  const action = createAddListenerAction(query);
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     window.requestIdleCallback(() => {
       const unsubscribe = query.onSnapshot(_handleReceiveSnapshot(dispatch, query, queryId));
       resolve(dispatch({ type: LISTENERS.ADD, payload: unsubscribe, meta: { queryId } }));
@@ -154,10 +147,7 @@ export const STORAGE = {
   METADATA: createRequestActionTypes('storage/metadata')
 };
 
-export const getStorageDownloadUrl = (reference: Reference) => (
-  dispatch: Dispatch,
-  getState: GetState
-): Promise<any> => {
+export const getStorageDownloadUrl = (reference: Reference) => (dispatch: Dispatch): Promise<any> => {
   const meta = { reference };
   dispatch({ type: STORAGE.URL.REQUEST, meta });
   return reference
@@ -171,7 +161,7 @@ export const getStorageDownloadUrl = (reference: Reference) => (
     });
 };
 
-export const getStorageMetadata = (reference: Reference) => (dispatch: Dispatch, getState: GetState): Promise<any> => {
+export const getStorageMetadata = (reference: Reference) => (dispatch: Dispatch): Promise<any> => {
   const meta = { reference };
   dispatch({ type: STORAGE.METADATA.REQUEST, meta });
   return reference

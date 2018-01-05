@@ -47,16 +47,26 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   }
 
   return new Promise((resolve, reject) => {
-    auth.onAuthStateChanged((newUser?: any) => {
-      store.dispatch(setUser(newUser, userCollection)).then(() => {
-        resolve({ app, select, selectAuth, selectStorage, store });
-      });
-      if (newUser) {
-        currentUid = newUser.uid;
-      } else {
-        store.dispatch(unsetUser(currentUid, userCollection));
+    auth.onAuthStateChanged(
+      (newUser?: any) => {
+        store
+          .dispatch(setUser(newUser, userCollection))
+          .then(() => {
+            resolve({ app, select, selectAuth, selectStorage, store });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+        if (newUser) {
+          currentUid = newUser.uid;
+        } else {
+          store.dispatch(unsetUser(currentUid, userCollection));
+        }
+      },
+      (error: typeof firebase.auth.Error) => {
+        reject(error);
       }
-    });
+    );
   });
 }
 

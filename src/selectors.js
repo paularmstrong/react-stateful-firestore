@@ -6,7 +6,7 @@ import { addListener, addQuery, getStorageDownloadUrl, getStorageMetadata } from
 
 import type { Auth } from 'firebase/auth';
 import type { Query } from 'firebase/firestore';
-import type { Reference, Storage } from 'firebase/storage';
+import type { Reference } from 'firebase/storage';
 import type { Store } from 'redux';
 import type { StoreState } from './reducers';
 import type { QueryState } from './reducers/queries';
@@ -28,7 +28,6 @@ const stroageOptionDefaults = {
 };
 
 const emptyArray = [];
-const emptyObject = {};
 
 const singleUndefined = { fetchStatus: FetchStatus.NONE, doc: undefined };
 const collectionUndefiend = { fetchStatus: FetchStatus.NONE, docs: emptyArray };
@@ -78,8 +77,7 @@ export const initSelectAuth = (auth: Auth, userCollection?: string) => {
     [selectUid, selectUsersCollection],
     (uid, users) => (users ? users[uid] : undefined)
   );
-  const selectCurrentUser = (state: StoreState) =>
-    auth.currentUser ? JSON.stringify(auth.currentUser.toJSON()) : undefined;
+  const selectCurrentUser = () => (auth.currentUser ? JSON.stringify(auth.currentUser.toJSON()) : undefined);
 
   const selector = createSelector([selectUid, selectCurrentUser, selectStoreQuery, selectUserData], (
     uid: string,

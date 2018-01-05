@@ -57,6 +57,7 @@ export function reducer(state: State = defaultState, action: Action) {
                 ...change.doc.data()
               };
             }
+            break;
           }
 
           case 'modified':

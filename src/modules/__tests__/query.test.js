@@ -1,8 +1,6 @@
-import { getCollectionQueryPath, getQueryId, getQueryPath } from '../query';
+import { getCollectionQueryPath, getQueryId } from '../query';
 
 describe('query', () => {
-  describe('getCollectionQueryPath', () => {});
-
   describe('getQueryId', () => {
     describe('for firebase.firestore.Document', () => {
       test('returns the id if available and equal to the path', () => {
@@ -35,5 +33,10 @@ describe('query', () => {
       expect(getCollectionQueryPath({ id: 'foo/123/bar', path: 'foo/123/bar' })).toEqual('foo/123/bar');
       expect(getCollectionQueryPath({ id: 'foo/123/bar', path: 'foo/123/bar/456' })).toEqual('foo/123/bar');
     });
+  });
+
+  // TODO: add tests
+  describe('getQueryPath', () => {
+    test('does a thing', () => {});
   });
 });

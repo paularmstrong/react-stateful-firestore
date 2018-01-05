@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "jest/globals": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:promise/recommended"
+  ],
+  "plugins": ["react", "flowtype", "jest", "promise"],
+  "rules": {
+    "no-use-before-define": ["error", "nofunc"],
+    "flowtype/define-flow-type": "error",
+    "promise/always-return": "off",
+    "promise/avoid-new": "off"
+  },
+  "globals": { "process": true, "Promise": true }
+}

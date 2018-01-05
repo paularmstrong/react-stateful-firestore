@@ -7,8 +7,6 @@ import type firebase from 'firebase';
 import type { StoreState } from './reducers';
 import type { Store } from 'redux';
 
-type AuthState = { doc: {}, fetchStatus: $Values<typeof FetchStatus> };
-
 type Props = {};
 type State = {
   doc: {},

@@ -15,10 +15,35 @@
     "type": "git"
   },
   "license": "MIT",
-  "private": false,
+  "scripts": {
+    "build": "npm-run-all build:cjs build:es build:flow",
+    "build:cjs": "NODE_ENV=production rollup -c",
+    "build:es": "babel src/*.js src/**/*.js -d build/ --sourceMaps inline --source-maps true --ignore '/__tests__/'",
+    "build:flow": "flow-copy-source -i **__tests__/*.js src build/src",
+    "format:check": "find src -name '*.js' | xargs prettier --debug-check",
+    "lint": "eslint src/ --fix",
+    "prebuild": "rimraf build",
+    "precommit": "flow && lint-staged",
+    "test": "BABEL_ENV=development jest"
+  },
+  "lint-staged": {
+    "*.js": ["test", "eslint --fix", "git add"],
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
+  "peerDependencies": {
+    "prop-types": ">=15.6.0",
+    "react": "~16.0.0"
+  },
+  "dependencies": {
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.1.2",
     "babel-jest": "^22.0.4",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-syntax-flow": "^6.18.0",
@@ -30,6 +55,12 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.0",
+    "eslint": "^4.14.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.40.1",
+    "eslint-plugin-jest": "^21.4.2",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.5.1",
     "flow-bin": "^0.62.0",
     "flow-copy-source": "^1.2.1",
     "flow-typed": "^2.2.3",
@@ -48,30 +79,6 @@
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0"
-  },
-  "peerDependencies": {
-    "prop-types": ">=15.6.0",
-    "react": "~16.0.0"
-  },
-  "scripts": {
-    "build": "npm-run-all build:cjs build:es build:flow",
-    "build:cjs": "NODE_ENV=production rollup -c",
-    "build:es": "babel src/*.js src/**/*.js -d build/ --sourceMaps inline --source-maps true --ignore '/__tests__/'",
-    "build:flow": "flow-copy-source -i **__tests__/*.js src build/src",
-    "format:check": "find src -name '*.js' | xargs prettier --debug-check",
-    "prebuild": "rimraf build",
-    "precommit": "flow && lint-staged",
-    "test": "BABEL_ENV=development jest"
-  },
-  "lint-staged": {
-    "src/**/*.js": ["test", "git add"],
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
-  },
-  "dependencies": {
-    "redux": "^3.7.2",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1"
   },
   "jest": {
     "rootDir": "src/",
