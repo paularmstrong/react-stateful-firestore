@@ -32,6 +32,7 @@
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "peerDependencies": {
+    "firebase": ">=4.8.1",
     "prop-types": ">=15.6.0",
     "react": "~16.0.0"
   },
