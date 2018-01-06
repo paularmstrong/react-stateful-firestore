@@ -27,12 +27,14 @@ export const QUERIES = {
 };
 
 const _handleReceiveSnapshot = (dispatch: Dispatch, query, queryId) => (snapshot) => {
+  const actions = [];
   if (snapshot.docChanges) {
-    dispatch({ type: COLLECTIONS.MODIFY, payload: snapshot, meta: { query } });
+    actions.push({ type: COLLECTIONS.MODIFY, payload: snapshot, meta: { query } });
   } else {
-    dispatch({ type: COLLECTIONS.MODIFY_ONE, payload: snapshot, meta: { query } });
+    actions.push({ type: COLLECTIONS.MODIFY_ONE, payload: snapshot, meta: { query } });
   }
-  dispatch({ type: QUERIES.SUCCESS, payload: snapshot, meta: { queryId } });
+  actions.push({ type: QUERIES.SUCCESS, payload: snapshot, meta: { queryId } });
+  dispatch(actions);
 };
 
 export const addQuery = (query: Query, queryIdPrefix: string = '') => (
@@ -116,12 +118,14 @@ export const setUser = (currentUser?: { uid: string }, userCollection?: string) 
   getState: GetState,
   { firestore }: ThunkArgs
 ): Promise<any> => {
+  const actions = [];
   if (currentUser && userCollection) {
     const query = firestore.doc(`${userCollection}/${currentUser.uid}`);
-    dispatch(addQuery(query, _authQueryPrefix));
-    dispatch(addListener(query, _authQueryPrefix));
+    actions.push(addQuery(query, _authQueryPrefix));
+    actions.push(addListener(query, _authQueryPrefix));
   }
-  dispatch({ type: AUTH.CHANGE, payload: currentUser });
+  actions.push({ type: AUTH.CHANGE, payload: currentUser });
+  dispatch(actions);
   return Promise.resolve();
 };
 
@@ -130,14 +134,16 @@ export const unsetUser = (uid?: string, userCollection?: string) => (
   getState: GetState,
   { firestore }: ThunkArgs
 ): Promise<any> => {
+  const actions = [];
   if (uid) {
     if (userCollection) {
       const query = firestore.doc(`${userCollection}/${uid}`);
-      dispatch(removeQuery(query, _authQueryPrefix));
-      dispatch(removeListener(query, _authQueryPrefix));
-      dispatch({ type: COLLECTIONS.REMOVE, payload: { id: uid }, meta: { query } });
+      actions.push(removeQuery(query, _authQueryPrefix));
+      actions.push(removeListener(query, _authQueryPrefix));
+      actions.push({ type: COLLECTIONS.REMOVE, payload: { id: uid }, meta: { query } });
     }
-    dispatch({ type: AUTH.CHANGE });
+    actions.push({ type: AUTH.CHANGE });
+    dispatch(actions);
   }
   return Promise.resolve();
 };

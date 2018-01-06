@@ -1,4 +1,5 @@
 // @flow
+import { batchMiddleware } from './middleware/batch';
 import connect from './connect';
 import connectAuth from './connectAuth';
 import Provider from './Provider';
@@ -24,12 +25,14 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   const auth = firebase.auth(app);
 
   const thunkArgs = { auth, firestore };
-  const middleware = [thunk.withExtraArgument(thunkArgs)];
+  const middleware = [thunk.withExtraArgument(thunkArgs), batchMiddleware];
+
   if (process.env.NODE_ENV !== 'production') {
     const createLogger = require('redux-logger').createLogger;
-    const logger = createLogger({ collapsed: true });
+    const logger = createLogger({ collapsed: true, diff: true });
     middleware.push(logger);
   }
+
   store = createStore(reducers, applyMiddleware(...middleware));
   if (process.env.NODE_ENV !== 'production') {
     window.redux = store;

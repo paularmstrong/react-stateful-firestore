@@ -1,4 +1,5 @@
 import * as Actions from '../actions';
+import { batchMiddleware } from '../middleware/batch';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -6,7 +7,7 @@ const query = { id: 'foo', path: 'foo', get: () => Promise.resolve({}), onSnapsh
 const firestore = {
   doc: (path) => ({ ...query, id: path, path })
 };
-const middlewares = [thunk.withExtraArgument({ firestore })];
+const middlewares = [thunk.withExtraArgument({ firestore }), batchMiddleware];
 const mockStore = configureStore(middlewares);
 window.requestIdleCallback = jest.fn((cb) => cb());
 

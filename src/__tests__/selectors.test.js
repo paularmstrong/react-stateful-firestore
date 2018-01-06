@@ -1,9 +1,10 @@
+import { batchMiddleware } from '../middleware/batch';
 import configureStore from 'redux-mock-store';
 import { FetchStatus } from '../modules/fetchStatus';
 import thunk from 'redux-thunk';
 import { initSelect, initSelectAuth } from '../selectors';
 
-const middlewares = [thunk];
+const middlewares = [thunk, batchMiddleware];
 const mockStore = configureStore(middlewares);
 const taco = { id: '123', type: 'delicious' };
 const mockState = {

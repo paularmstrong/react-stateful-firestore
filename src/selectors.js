@@ -56,10 +56,11 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query, selectOption
   });
 
   return () => {
-    store.dispatch(addQuery(query));
+    const actions = [addQuery(query)];
     if (options.subscribe) {
-      store.dispatch(addListener(query));
+      actions.push(addListener(query));
     }
+    store.dispatch(actions);
     return selector;
   };
 };

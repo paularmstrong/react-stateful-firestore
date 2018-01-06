@@ -1,4 +1,5 @@
 // @flow
+import { batchReducer } from '../middleware/batch';
 import { combineReducers } from 'redux';
 import { reducer as auth } from './auth';
 import { reducer as collections } from './collections';
@@ -20,12 +21,14 @@ export type StoreState = {
   storage: StorageState
 };
 
-const reducer = combineReducers({
-  auth,
-  collections,
-  listeners,
-  queries,
-  storage
-});
+const reducer = batchReducer(
+  combineReducers({
+    auth,
+    collections,
+    listeners,
+    queries,
+    storage
+  })
+);
 
 export default reducer;

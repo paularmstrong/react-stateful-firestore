@@ -10,16 +10,30 @@ Array [
         "onSnapshot": [Function],
         "path": "foo",
       },
-    },
-    "payload": Object {},
-    "type": "firestore/collections/MODIFY_ONE",
-  },
-  Object {
-    "meta": Object {
       "queryId": "foo",
     },
-    "payload": Object {},
-    "type": "firestore/queries/SUCCESS",
+    "payload": Array [
+      Object {
+        "meta": Object {
+          "query": Object {
+            "get": [Function],
+            "id": "foo",
+            "onSnapshot": [Function],
+            "path": "foo",
+          },
+        },
+        "payload": Object {},
+        "type": "firestore/collections/MODIFY_ONE",
+      },
+      Object {
+        "meta": Object {
+          "queryId": "foo",
+        },
+        "payload": Object {},
+        "type": "firestore/queries/SUCCESS",
+      },
+    ],
+    "type": "BATCH",
   },
   Object {
     "meta": Object {
@@ -53,16 +67,30 @@ Array [
         "onSnapshot": [Function],
         "path": "foo",
       },
-    },
-    "payload": Object {},
-    "type": "firestore/collections/MODIFY_ONE",
-  },
-  Object {
-    "meta": Object {
       "queryId": "foo",
     },
-    "payload": Object {},
-    "type": "firestore/queries/SUCCESS",
+    "payload": Array [
+      Object {
+        "meta": Object {
+          "query": Object {
+            "get": [Function],
+            "id": "foo",
+            "onSnapshot": [Function],
+            "path": "foo",
+          },
+        },
+        "payload": Object {},
+        "type": "firestore/collections/MODIFY_ONE",
+      },
+      Object {
+        "meta": Object {
+          "queryId": "foo",
+        },
+        "payload": Object {},
+        "type": "firestore/queries/SUCCESS",
+      },
+    ],
+    "type": "BATCH",
   },
 ]
 `;
@@ -89,16 +117,30 @@ Array [
         "onSnapshot": [Function],
         "path": "users/123",
       },
-    },
-    "payload": Object {},
-    "type": "firestore/collections/MODIFY_ONE",
-  },
-  Object {
-    "meta": Object {
       "queryId": "auth|users/123",
     },
-    "payload": Object {},
-    "type": "firestore/queries/SUCCESS",
+    "payload": Array [
+      Object {
+        "meta": Object {
+          "query": Object {
+            "get": [Function],
+            "id": "users/123",
+            "onSnapshot": [Function],
+            "path": "users/123",
+          },
+        },
+        "payload": Object {},
+        "type": "firestore/collections/MODIFY_ONE",
+      },
+      Object {
+        "meta": Object {
+          "queryId": "auth|users/123",
+        },
+        "payload": Object {},
+        "type": "firestore/queries/SUCCESS",
+      },
+    ],
+    "type": "BATCH",
   },
   Object {
     "meta": Object {
@@ -108,10 +150,16 @@ Array [
     "type": "firestore/listeners/ADD",
   },
   Object {
-    "payload": Object {
-      "uid": "123",
-    },
-    "type": "firestore/auth/CHANGE",
+    "meta": Object {},
+    "payload": Array [
+      Object {
+        "payload": Object {
+          "uid": "123",
+        },
+        "type": "firestore/auth/CHANGE",
+      },
+    ],
+    "type": "BATCH",
   },
   Object {
     "meta": Object {
@@ -121,16 +169,30 @@ Array [
         "onSnapshot": [Function],
         "path": "users/123",
       },
-    },
-    "payload": Object {},
-    "type": "firestore/collections/MODIFY_ONE",
-  },
-  Object {
-    "meta": Object {
       "queryId": "auth|users/123",
     },
-    "payload": Object {},
-    "type": "firestore/queries/SUCCESS",
+    "payload": Array [
+      Object {
+        "meta": Object {
+          "query": Object {
+            "get": [Function],
+            "id": "users/123",
+            "onSnapshot": [Function],
+            "path": "users/123",
+          },
+        },
+        "payload": Object {},
+        "type": "firestore/collections/MODIFY_ONE",
+      },
+      Object {
+        "meta": Object {
+          "queryId": "auth|users/123",
+        },
+        "payload": Object {},
+        "type": "firestore/queries/SUCCESS",
+      },
+    ],
+    "type": "BATCH",
   },
 ]
 `;
@@ -138,28 +200,22 @@ Array [
 exports[`Actions setUser triggers only auth change action if no collection 1`] = `
 Array [
   Object {
-    "payload": Object {
-      "uid": "123",
-    },
-    "type": "firestore/auth/CHANGE",
+    "meta": Object {},
+    "payload": Array [
+      Object {
+        "payload": Object {
+          "uid": "123",
+        },
+        "type": "firestore/auth/CHANGE",
+      },
+    ],
+    "type": "BATCH",
   },
 ]
 `;
 
 exports[`Actions unsetUser removes queries, listeners, and the user from the collection 1`] = `
 Array [
-  Object {
-    "meta": Object {
-      "queryId": "auth|users/123",
-    },
-    "payload": Object {
-      "get": [Function],
-      "id": "users/123",
-      "onSnapshot": [Function],
-      "path": "users/123",
-    },
-    "type": "firestore/queries/REMOVE",
-  },
   Object {
     "meta": Object {
       "queryId": "auth|users/123",
@@ -174,14 +230,40 @@ Array [
         "onSnapshot": [Function],
         "path": "users/123",
       },
+      "queryId": "auth|users/123",
     },
-    "payload": Object {
-      "id": "123",
-    },
-    "type": "firestore/collections/REMOVE",
-  },
-  Object {
-    "type": "firestore/auth/CHANGE",
+    "payload": Array [
+      Object {
+        "meta": Object {
+          "queryId": "auth|users/123",
+        },
+        "payload": Object {
+          "get": [Function],
+          "id": "users/123",
+          "onSnapshot": [Function],
+          "path": "users/123",
+        },
+        "type": "firestore/queries/REMOVE",
+      },
+      Object {
+        "meta": Object {
+          "query": Object {
+            "get": [Function],
+            "id": "users/123",
+            "onSnapshot": [Function],
+            "path": "users/123",
+          },
+        },
+        "payload": Object {
+          "id": "123",
+        },
+        "type": "firestore/collections/REMOVE",
+      },
+      Object {
+        "type": "firestore/auth/CHANGE",
+      },
+    ],
+    "type": "BATCH",
   },
 ]
 `;
@@ -189,7 +271,13 @@ Array [
 exports[`Actions unsetUser triggers only auth change action if no collection 1`] = `
 Array [
   Object {
-    "type": "firestore/auth/CHANGE",
+    "meta": Object {},
+    "payload": Array [
+      Object {
+        "type": "firestore/auth/CHANGE",
+      },
+    ],
+    "type": "BATCH",
   },
 ]
 `;
