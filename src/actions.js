@@ -125,8 +125,7 @@ export const setUser = (currentUser?: { uid: string }, userCollection?: string) 
     actions.push(addListener(query, _authQueryPrefix));
   }
   actions.push({ type: AUTH.CHANGE, payload: currentUser });
-  dispatch(actions);
-  return Promise.resolve();
+  return Promise.resolve(dispatch(actions));
 };
 
 export const unsetUser = (uid?: string, userCollection?: string) => (

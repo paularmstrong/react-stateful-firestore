@@ -33,11 +33,6 @@ Array [
     },
     "type": "firestore/queries/REQUEST",
   },
-  Object {
-    "meta": Object {},
-    "payload": Array [],
-    "type": "BATCH",
-  },
 ]
 `;
 
@@ -67,11 +62,6 @@ Array [
     },
     "payload": undefined,
     "type": "firestore/listeners/ADD",
-  },
-  Object {
-    "meta": Object {},
-    "payload": Array [],
-    "type": "BATCH",
   },
 ]
 `;

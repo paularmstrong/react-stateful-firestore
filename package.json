@@ -28,7 +28,7 @@
     "test": "BABEL_ENV=development jest"
   },
   "lint-staged": {
-    "*.js": ["test", "eslint --fix", "git add"],
+    "*.js": ["test --findRelatedTests", "eslint --fix", "git add"],
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "peerDependencies": {

@@ -39,7 +39,7 @@ export const batchMiddleware = ({ dispatch }: { dispatch: Dispatch }) => (next: 
         plainActions.push(action);
       }
     });
-    return next(actionBatch(plainActions));
+    return plainActions.length ? next(actionBatch(plainActions)) : undefined;
   } else {
     return next(actions);
   }
