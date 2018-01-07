@@ -34,6 +34,7 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
     };
 
     static displayName = 'ConnectAuth';
+    static WrappedComponent = WrappedComponent;
 
     static contextTypes = {
       firebase: object.isRequired

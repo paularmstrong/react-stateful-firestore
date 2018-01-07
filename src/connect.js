@@ -48,6 +48,7 @@ export const connect = (getSelectors: (select: Select, apis: Apis, props: Props)
     };
 
     static displayName = 'Connect';
+    static WrappedComponent = WrappedComponent;
 
     static contextTypes = {
       firebase: object.isRequired
