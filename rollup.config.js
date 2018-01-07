@@ -13,7 +13,15 @@ const plugins = [
     }
   })
 ];
-const external = ['firebase', 'firebase/firestore', 'react', 'prop-types'];
+const external = [
+  '@firebase/app',
+  '@firebase/auth',
+  '@firebase/firestore',
+  '@firebase/messaging',
+  '@firebase/storage',
+  'react',
+  'prop-types'
+];
 
 export default [
   {

@@ -2,9 +2,9 @@
 import { getQueryId } from './modules/query';
 import { createActionType, createRequestActionTypes } from './modules/actionTypes';
 
-import type { Auth } from 'firebase/auth';
-import type { Firestore, Query } from 'firebase/firestore';
-import type { Reference } from 'firebase/storage';
+import type { Auth } from '@firebase/auth';
+import type { Firestore, Query } from '@firebase/firestore';
+import type { Reference } from '@firebase/storage';
 import type { StoreState } from './reducers';
 import type { FluxStandardAction } from './reducers/flux-standard-action';
 

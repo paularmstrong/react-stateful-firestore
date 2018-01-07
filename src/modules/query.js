@@ -1,5 +1,5 @@
 // @flow
-import type { FieldPath, Query } from 'firebase/firestore';
+import type { FieldPath, Query } from '@firebase/firestore';
 
 type Operation = { name: '<' | '<=' | '==' | '>=' | '>' };
 type Value = { internalValue: any };

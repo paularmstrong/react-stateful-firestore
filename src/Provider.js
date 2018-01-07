@@ -1,10 +1,13 @@
 // @flow
 import { Component } from 'react';
-import firebase from 'firebase';
-import 'firebase/firestore';
+import firebase from '@firebase/app';
+import '@firebase/auth';
+import '@firebase/firestore';
+import '@firebase/messaging';
+import '@firebase/storage';
 import { any } from 'prop-types';
 
-import type { App } from 'firebase/app';
+import type { App } from '@firebase/app';
 
 type FirestoreContext = {
   app: App,

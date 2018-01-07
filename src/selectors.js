@@ -4,9 +4,9 @@ import { FetchStatus } from './modules/fetchStatus';
 import { getCollectionQueryPath, getQueryId, getQueryPath } from './modules/query';
 import { addListener, addQuery, getStorageDownloadUrl, getStorageMetadata } from './actions';
 
-import type { Auth } from 'firebase/auth';
-import type { Query } from 'firebase/firestore';
-import type { Reference } from 'firebase/storage';
+import type { Auth } from '@firebase/auth';
+import type { Query } from '@firebase/firestore';
+import type { Reference } from '@firebase/storage';
 import type { Store } from 'redux';
 import type { StoreState } from './reducers';
 import type { QueryState } from './reducers/queries';
@@ -71,7 +71,7 @@ export const initSelectAuth = (auth: Auth, userCollection?: string) => {
   const selectUid = (state: StoreState) => state.auth.uid;
   const selectStoreQuery = createSelector(
     [selectCollectionName, selectUid, selectQueries],
-    (uid, queries) => (userCollection ? queries[`auth|${userCollection}/${uid}`] : undefined)
+    (uid, queries) => (userCollection && queries ? queries[`auth|${userCollection}/${uid}`] : undefined)
   );
   const selectUsersCollection = (state: StoreState) => (userCollection ? state.collections[userCollection] : undefined);
   const selectUserData = createSelector(

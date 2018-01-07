@@ -2,7 +2,7 @@
 import { QUERIES } from '../actions';
 import { FetchStatus } from '../modules/fetchStatus';
 
-import type { DocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import type { DocumentSnapshot, QuerySnapshot } from '@firebase/firestore';
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type QueryState = {

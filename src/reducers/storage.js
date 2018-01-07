@@ -2,7 +2,7 @@
 import { FetchStatus } from '../modules/fetchStatus';
 import { STORAGE } from '../actions';
 
-import type { FullMetadata, Reference } from 'firebase/storage';
+import type { FullMetadata, Reference } from '@firebase/storage';
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type State = {

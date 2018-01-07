@@ -2,17 +2,19 @@
 import { batchMiddleware } from './middleware/batch';
 import connect from './connect';
 import connectAuth from './connectAuth';
-import Provider from './Provider';
+import firebase from '@firebase/app';
+import '@firebase/auth';
+import '@firebase/firestore';
 import { FetchStatus } from './modules/fetchStatus';
-import firebase from 'firebase';
-import 'firebase/firestore';
+import Provider from './Provider';
 import reducers from './reducers';
 import { initSelect, initSelectAuth, initSelectStorage } from './selectors';
 import { setUser, unsetUser } from './actions';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 
-import type { App } from 'firebase/app';
+import type { App } from '@firebase/app';
+import type { Error as AuthError } from '@firebase/auth';
 
 let store;
 
@@ -66,7 +68,7 @@ export default function init(app: App, userCollection?: string): Promise<any> {
           store.dispatch(unsetUser(currentUid, userCollection));
         }
       },
-      (error: typeof firebase.auth.Error) => {
+      (error: AuthError) => {
         reject(error);
       }
     );
