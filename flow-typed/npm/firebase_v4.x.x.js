@@ -370,7 +370,7 @@ declare class $npm$firebase$database$ThenableReference extends $npm$firebase$dat
 declare class $npm$firebase$firestore$Firestore {
   app: $npm$firebase$App;
   batch(): $npm$firebase$firestore$WriteBatch;
-  collection(collectionPath: string): $npm$firebase$firestore$Query;
+  collection(collectionPath: string): $npm$firebase$firestore$CollectionReference;
   doc(documentPath: string): $npm$firebase$firestore$Query;
   enablePersistence(): Promise<void>;
   runTransaction(updateFunction: (transaction: $npm$firebase$firestore$Transaction) => void): Promise<mixed>;
