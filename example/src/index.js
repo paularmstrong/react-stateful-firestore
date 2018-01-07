@@ -1,12 +1,11 @@
 import App from './App';
-import firebase from 'firebase';
-import 'firebase/firestore';
+import app from '@firebase/app';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import initFirestore, { Provider } from 'react-stateful-firestore';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 
-const app = firebase.initializeApp({
+const myApp = app.initializeApp({
   apiKey: '<API_KEY>',
   authDomain: '<DOMAIN>',
   databaseURL: '<DB_URL>',
@@ -17,7 +16,7 @@ const app = firebase.initializeApp({
 
 const rootEl = document.getElementById('root');
 
-initFirestore(app).then((store) => {
+initFirestore(myApp).then((store) => {
   if (rootEl) {
     ReactDOM.render(
       <Provider store={store}>

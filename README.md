@@ -20,13 +20,30 @@ yarn add react-stateful-firestore
 
 #### Set up Firebase
 
-First import Firebase, Firestore, and initialize your Firebase app.
+Install the Firebase dependencies:
+
+```sh
+yarn add @firebase/app \
+  @firebase/auth \
+  @firebase/firestore \
+  @firebase/messaging \
+  @firebase/storage
+# or
+npm install --save @firebase/app \
+  @firebase/auth \
+  @firebase/firestore \
+  @firebase/messaging \
+  @firebase/storage
+```
+
+_Note: We install these packages independently instead of `firebase` to substantially reduce your final bundle size. You can still use `firebase` if you want, but it's not recommended._
+
+Next, initialize your Firebase app.
 
 ```js
-import firebase from 'firebase';
-import 'firebase/firestore';
+import app from '@firebase/app';
 
-const app = firebase.initializeApp({
+const myApp = app.initializeApp({
   apiKey: '<API_KEY>',
   authDomain: '<DOMAIN>',
   databaseURL: '<DB_URL>',
@@ -38,12 +55,12 @@ const app = firebase.initializeApp({
 
 #### Provide the store
 
-Next, initialize the React-Stateful-Firestore instance and render it in the Provider component.
+Once your firebase application is initialized, create the React-Stateful-Firestore instance and render it in the Provider component.
 
 ```js
 import initReactFirestore, { Provider } from 'react-stateful-firestore';
 
-initReactFirestore(app).then((store) => {
+initReactFirestore(myApp).then((store) => {
   ReactDOM.render(
     <Provider store={store}>
       <App />
