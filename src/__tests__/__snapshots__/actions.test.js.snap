@@ -95,6 +95,74 @@ Array [
 ]
 `;
 
+exports[`Actions getStorageDownloadUrl does nothing if already in state 1`] = `Array []`;
+
+exports[`Actions getStorageDownloadUrl requests download URL 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "reference": Object {
+        "fullPath": "/thing",
+        "getDownloadURL": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      },
+    },
+    "type": "firestore/storage/downloadUrl/REQUEST",
+  },
+  Object {
+    "meta": Object {
+      "reference": Object {
+        "fullPath": "/thing",
+        "getDownloadURL": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      },
+    },
+    "payload": undefined,
+    "type": "firestore/storage/downloadUrl/SUCCESS",
+  },
+]
+`;
+
+exports[`Actions getStorageMetadata does nothing if already in state 1`] = `Array []`;
+
+exports[`Actions getStorageMetadata requests metadata 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "reference": Object {
+        "fullPath": "/thing",
+        "getMetadata": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      },
+    },
+    "type": "firestore/storage/metadata/REQUEST",
+  },
+  Object {
+    "meta": Object {
+      "reference": Object {
+        "fullPath": "/thing",
+        "getMetadata": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      },
+    },
+    "payload": undefined,
+    "type": "firestore/storage/metadata/SUCCESS",
+  },
+]
+`;
+
 exports[`Actions setUser adds queries and listeners 1`] = `
 Array [
   Object {

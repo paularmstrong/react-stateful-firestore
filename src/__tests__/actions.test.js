@@ -11,7 +11,7 @@ const middlewares = [thunk.withExtraArgument({ firestore }), batchMiddleware];
 const mockStore = configureStore(middlewares);
 window.requestIdleCallback = jest.fn((cb) => cb());
 
-const defaultState = { auth: {}, collections: {}, listeners: {}, queries: {} };
+const defaultState = { auth: {}, collections: {}, listeners: {}, queries: {}, storage: {} };
 describe('Actions', () => {
   let store;
   beforeEach(() => {
@@ -105,6 +105,46 @@ describe('Actions', () => {
       store = mockStore(defaultState);
       return store.dispatch(Actions.unsetUser('123')).then(() => {
         expect(store.getActions()).toMatchSnapshot();
+      });
+    });
+  });
+
+  describe('getStorageDownloadUrl', () => {
+    test('requests download URL', () => {
+      store = mockStore(defaultState);
+      const getDownloadURL = jest.fn(() => Promise.resolve());
+      return store.dispatch(Actions.getStorageDownloadUrl({ fullPath: '/thing', getDownloadURL })).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+        expect(getDownloadURL).toHaveBeenCalled();
+      });
+    });
+
+    test('does nothing if already in state', () => {
+      store = mockStore({ ...defaultState, storage: { '/thing': { downloadUrl: '/thing' } } });
+      const getDownloadURL = jest.fn(() => Promise.resolve());
+      return store.dispatch(Actions.getStorageDownloadUrl({ fullPath: '/thing', getDownloadURL })).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+        expect(getDownloadURL).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('getStorageMetadata', () => {
+    test('requests metadata', () => {
+      store = mockStore(defaultState);
+      const getMetadata = jest.fn(() => Promise.resolve());
+      return store.dispatch(Actions.getStorageMetadata({ fullPath: '/thing', getMetadata })).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+        expect(getMetadata).toHaveBeenCalled();
+      });
+    });
+
+    test('does nothing if already in state', () => {
+      store = mockStore({ ...defaultState, storage: { '/thing': { downloadUrl: '/thing', metadata: {} } } });
+      const getMetadata = jest.fn(() => Promise.resolve());
+      return store.dispatch(Actions.getStorageMetadata({ fullPath: '/thing', getMetadata })).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+        expect(getMetadata).not.toHaveBeenCalled();
       });
     });
   });

@@ -152,8 +152,17 @@ export const STORAGE = {
   METADATA: createRequestActionTypes('storage/metadata')
 };
 
-export const getStorageDownloadUrl = (reference: Reference) => (dispatch: Dispatch): Promise<any> => {
+export const getStorageDownloadUrl = (reference: Reference) => (
+  dispatch: Dispatch,
+  getState: GetState
+): Promise<any> => {
   const meta = { reference };
+  const state = getState();
+  const ref = state.storage[reference.fullPath];
+  if (ref && ref.downloadUrl) {
+    return Promise.resolve(ref);
+  }
+
   dispatch({ type: STORAGE.URL.REQUEST, meta });
   return reference
     .getDownloadURL()
@@ -166,8 +175,14 @@ export const getStorageDownloadUrl = (reference: Reference) => (dispatch: Dispat
     });
 };
 
-export const getStorageMetadata = (reference: Reference) => (dispatch: Dispatch): Promise<any> => {
+export const getStorageMetadata = (reference: Reference) => (dispatch: Dispatch, getState: GetState): Promise<any> => {
   const meta = { reference };
+  const state = getState();
+  const ref = state.storage[reference.fullPath];
+  if (ref && ref.metadata) {
+    return Promise.resolve(ref);
+  }
+
   dispatch({ type: STORAGE.METADATA.REQUEST, meta });
   return reference
     .getMetadata()
