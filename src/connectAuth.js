@@ -81,8 +81,7 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
       };
       switch (fetchStatus) {
         case FetchStatus.LOADED:
-        case FetchStatus.FAILED:
-        case FetchStatus.NONE: {
+        case FetchStatus.FAILED: {
           return <WrappedComponent {...this.props} {...props} />;
         }
         default:

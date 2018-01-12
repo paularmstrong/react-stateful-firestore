@@ -66,11 +66,10 @@ export const initSelect = (store: Store<*, *, *>) => (query: Query, selectOption
 };
 
 export const initSelectAuth = (auth: Auth, userCollection?: string) => {
-  const loggedOut = { fetchStatus: FetchStatus.NONE, doc: undefined };
-  const selectCollectionName = () => userCollection;
+  const loggedOut = { fetchStatus: FetchStatus.LOADED, doc: undefined };
   const selectUid = (state: StoreState) => state.auth.uid;
   const selectStoreQuery = createSelector(
-    [selectCollectionName, selectUid, selectQueries],
+    [selectUid, selectQueries],
     (uid, queries) => (userCollection && queries ? queries[`auth|${userCollection}/${uid}`] : undefined)
   );
   const selectUsersCollection = (state: StoreState) => (userCollection ? state.collections[userCollection] : undefined);
@@ -89,7 +88,7 @@ export const initSelectAuth = (auth: Auth, userCollection?: string) => {
     if (!uid) {
       return loggedOut;
     }
-    const fetchStatus = storeQuery ? storeQuery.fetchStatus : FetchStatus.LOADED;
+    const fetchStatus = storeQuery ? storeQuery.fetchStatus : !userCollection ? FetchStatus.LOADED : FetchStatus.NONE;
     return {
       fetchStatus,
       doc: userCollection ? doc : {} // use a new object if no userCollection to cache bust

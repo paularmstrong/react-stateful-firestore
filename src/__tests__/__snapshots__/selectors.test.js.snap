@@ -89,6 +89,6 @@ Object {
     "id": "123",
     "type": "delicious",
   },
-  "fetchStatus": "loaded",
+  "fetchStatus": "none",
 }
 `;
