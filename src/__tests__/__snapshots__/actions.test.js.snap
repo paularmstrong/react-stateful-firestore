@@ -123,7 +123,7 @@ exports[`Actions addQuery adds the query with appropriate documentIds if collect
 Array [
   Object {
     "meta": Object {
-      "queryId": "foo:date<Thu Jul 13 2017 19:40:00 GMT-0700 (PDT)",
+      "queryId": "foo:date<mock date",
     },
     "payload": Array [
       "789",

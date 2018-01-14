@@ -73,7 +73,7 @@ describe('Actions', () => {
                       seconds: 1500000000000
                     },
                     toString() {
-                      return new Date(1500000000000).toString();
+                      return 'mock date';
                     }
                   }
                 }
