@@ -39,7 +39,7 @@
     "@firebase/messaging": ">=4.8.1",
     "@firebase/storage": ">=4.8.1",
     "prop-types": ">=15.6.0",
-    "react": "~16.0.0"
+    "react": ">=16.0.0"
   },
   "dependencies": {
     "redux": "^3.7.2",
