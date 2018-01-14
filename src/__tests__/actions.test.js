@@ -3,18 +3,22 @@ import { batchMiddleware } from '../middleware/batch';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-const query = { id: 'foo', path: 'foo', get: () => Promise.resolve({}), onSnapshot: (cb) => cb({}) };
-const firestore = {
-  doc: (path) => ({ ...query, id: path, path })
-};
-const middlewares = [thunk.withExtraArgument({ firestore }), batchMiddleware];
-const mockStore = configureStore(middlewares);
 window.requestIdleCallback = jest.fn((cb) => cb());
-
 const defaultState = { auth: {}, collections: {}, listeners: {}, queries: {}, storage: {} };
+
 describe('Actions', () => {
   let store;
+  let query;
+  let firestore;
+  let middlewares;
+  let mockStore;
   beforeEach(() => {
+    query = { id: 'foo', path: 'foo', get: jest.fn(() => Promise.resolve({})), onSnapshot: jest.fn((cb) => cb({})) };
+    firestore = {
+      doc: (path) => ({ ...query, id: path, path })
+    };
+    middlewares = [thunk.withExtraArgument({ firestore }), batchMiddleware];
+    mockStore = configureStore(middlewares);
     store = mockStore(defaultState);
   });
 
@@ -22,6 +26,7 @@ describe('Actions', () => {
     test('adds the query and executes it', () => {
       return store.dispatch(Actions.addQuery(query)).then(() => {
         expect(store.getActions()).toMatchSnapshot();
+        expect(query.get).toHaveBeenCalled();
       });
     });
 
@@ -29,7 +34,57 @@ describe('Actions', () => {
       store = mockStore({ ...defaultState, queries: { foo: {} } });
       return store.dispatch(Actions.addQuery(query)).then(() => {
         expect(store.getActions()).toEqual([]);
+        expect(query.get).not.toHaveBeenCalled();
       });
+    });
+
+    test('adds the query with appropriate documentIds if collection query exists (simple)', () => {
+      store = mockStore({ ...defaultState, collections: { foo: { '123': { id: '123' } } }, queries: { foo: {} } });
+      return store.dispatch(Actions.addQuery({ ...query, id: 'foo/123', path: 'foo/123' })).then(() => {
+        expect(store.getActions()).toMatchSnapshot();
+        expect(query.get).not.toHaveBeenCalled();
+      });
+    });
+
+    test('adds the query with appropriate documentIds if collection query exists (filtered)', () => {
+      store = mockStore({
+        ...defaultState,
+        collections: {
+          foo: {
+            '123': { id: '123' },
+            '456': { id: '456', date: new Date(1600000000000) },
+            '789': { id: '789', date: new Date(1400000000000) }
+          }
+        },
+        queries: { foo: {} }
+      });
+      return store
+        .dispatch(
+          Actions.addQuery({
+            _query: {
+              id: 'foo',
+              path: { segments: ['foo'] },
+              filters: [
+                {
+                  field: { segments: ['date'] },
+                  op: { name: '<' },
+                  value: {
+                    internalValue: {
+                      seconds: 1500000000000
+                    },
+                    toString() {
+                      return new Date(1500000000000).toString();
+                    }
+                  }
+                }
+              ]
+            }
+          })
+        )
+        .then(() => {
+          expect(store.getActions()).toMatchSnapshot();
+          expect(query.get).not.toHaveBeenCalled();
+        });
     });
 
     test('allows prefixing the queryId', () => {
@@ -47,6 +102,7 @@ describe('Actions', () => {
     test('starts the listener, then adds it', () => {
       return store.dispatch(Actions.addListener(query)).then(() => {
         expect(store.getActions()).toMatchSnapshot();
+        expect(query.onSnapshot).toHaveBeenCalled();
       });
     });
 
@@ -54,6 +110,15 @@ describe('Actions', () => {
       store = mockStore({ ...defaultState, listeners: { foo: {} } });
       return store.dispatch(Actions.addListener(query)).then(() => {
         expect(store.getActions()).toEqual([]);
+        expect(query.onSnapshot).not.toHaveBeenCalled();
+      });
+    });
+
+    test('does nothing if a listener for the collection is active', () => {
+      store = mockStore({ ...defaultState, listeners: { foo: {} } });
+      return store.dispatch(Actions.addListener({ ...query, id: 'foo/123', path: 'foo/123' })).then(() => {
+        expect(store.getActions()).toEqual([]);
+        expect(query.onSnapshot).not.toHaveBeenCalled();
       });
     });
 
@@ -123,7 +188,7 @@ describe('Actions', () => {
       store = mockStore({ ...defaultState, storage: { '/thing': { downloadUrl: '/thing' } } });
       const getDownloadURL = jest.fn(() => Promise.resolve());
       return store.dispatch(Actions.getStorageDownloadUrl({ fullPath: '/thing', getDownloadURL })).then(() => {
-        expect(store.getActions()).toMatchSnapshot();
+        expect(store.getActions()).toEqual([]);
         expect(getDownloadURL).not.toHaveBeenCalled();
       });
     });
@@ -143,7 +208,7 @@ describe('Actions', () => {
       store = mockStore({ ...defaultState, storage: { '/thing': { downloadUrl: '/thing', metadata: {} } } });
       const getMetadata = jest.fn(() => Promise.resolve());
       return store.dispatch(Actions.getStorageMetadata({ fullPath: '/thing', getMetadata })).then(() => {
-        expect(store.getActions()).toMatchSnapshot();
+        expect(store.getActions()).toEqual([]);
         expect(getMetadata).not.toHaveBeenCalled();
       });
     });

@@ -6,7 +6,7 @@ import type { DocumentSnapshot, QuerySnapshot, Query } from '@firebase/firestore
 import type { FluxStandardAction } from './flux-standard-action';
 
 export type State = {
-  [collectionId: string]: { [id: string]: {} }
+  [collectionPath: string]: { [id: string]: { id: string } }
 };
 
 type Meta = {

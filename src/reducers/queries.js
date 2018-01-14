@@ -107,6 +107,18 @@ export function reducer(state: State = defaultState, action: Action): State {
       };
     }
 
+    case QUERIES.ADD: {
+      const { meta: { queryId }, payload: documentIds } = action;
+      return {
+        ...state,
+        [queryId]: {
+          ...state[queryId],
+          documentIds,
+          fetchStatus: FetchStatus.LOADED
+        }
+      };
+    }
+
     case QUERIES.REMOVE: {
       const { meta: { queryId } } = action;
       const newState = { ...state };

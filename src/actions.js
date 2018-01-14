@@ -1,5 +1,5 @@
 // @flow
-import { getQueryId } from './modules/query';
+import { getCollectionQueryPath, getQueryId, getDocumentIdsForQuery } from './modules/query';
 import { createActionType, createRequestActionTypes } from './modules/actionTypes';
 
 import type { Auth } from '@firebase/auth';
@@ -23,6 +23,7 @@ export const COLLECTIONS = {
 
 export const QUERIES = {
   ...createRequestActionTypes('queries'),
+  ADD: createActionType('queries/ADD'),
   REMOVE: createActionType('queries/REMOVE')
 };
 
@@ -41,13 +42,21 @@ export const addQuery = (query: Query, queryIdPrefix: string = '') => (
   dispatch: Dispatch,
   getState: GetState
 ): Promise<any> => {
+  const state = getState();
+  const { queries } = state;
   const queryId = `${queryIdPrefix}${getQueryId(query)}`;
-  const { queries } = getState();
+  const collectionPath = `${queryIdPrefix}${getCollectionQueryPath(query)}`;
+
+  const meta = { queryId };
+
+  if (queryId !== collectionPath && collectionPath in queries) {
+    const documentIds = getDocumentIdsForQuery(query, state);
+    return Promise.resolve(dispatch({ type: QUERIES.ADD, payload: documentIds, meta }));
+  }
+
   if (queryId in queries) {
     return Promise.resolve();
   }
-
-  const meta = { queryId };
 
   dispatch({ type: QUERIES.REQUEST, payload: query, meta });
 
@@ -76,7 +85,9 @@ export const addListener = (query: Query, queryIdPrefix: string = '') => (
 ): Promise<any> => {
   const { listeners } = getState();
   const queryId = `${queryIdPrefix}${getQueryId(query)}`;
-  if (queryId in listeners) {
+  const collectionPath = `${queryIdPrefix}${getCollectionQueryPath(query)}`;
+
+  if (queryId in listeners || collectionPath in listeners) {
     return Promise.resolve();
   }
 

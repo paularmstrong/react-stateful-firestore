@@ -5,9 +5,15 @@ Array [
   Object {
     "meta": Object {
       "query": Object {
-        "get": [Function],
+        "get": [MockFunction],
         "id": "foo",
-        "onSnapshot": [Function],
+        "onSnapshot": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Function],
+            ],
+          ],
+        },
         "path": "foo",
       },
       "queryId": "foo",
@@ -16,9 +22,15 @@ Array [
       Object {
         "meta": Object {
           "query": Object {
-            "get": [Function],
+            "get": [MockFunction],
             "id": "foo",
-            "onSnapshot": [Function],
+            "onSnapshot": [MockFunction] {
+              "calls": Array [
+                Array [
+                  [Function],
+                ],
+              ],
+            },
             "path": "foo",
           },
         },
@@ -52,9 +64,13 @@ Array [
       "queryId": "foo",
     },
     "payload": Object {
-      "get": [Function],
+      "get": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
       "id": "foo",
-      "onSnapshot": [Function],
+      "onSnapshot": [MockFunction],
       "path": "foo",
     },
     "type": "firestore/queries/REQUEST",
@@ -62,9 +78,13 @@ Array [
   Object {
     "meta": Object {
       "query": Object {
-        "get": [Function],
+        "get": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
         "id": "foo",
-        "onSnapshot": [Function],
+        "onSnapshot": [MockFunction],
         "path": "foo",
       },
       "queryId": "foo",
@@ -73,9 +93,13 @@ Array [
       Object {
         "meta": Object {
           "query": Object {
-            "get": [Function],
+            "get": [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+            },
             "id": "foo",
-            "onSnapshot": [Function],
+            "onSnapshot": [MockFunction],
             "path": "foo",
           },
         },
@@ -95,7 +119,33 @@ Array [
 ]
 `;
 
-exports[`Actions getStorageDownloadUrl does nothing if already in state 1`] = `Array []`;
+exports[`Actions addQuery adds the query with appropriate documentIds if collection query exists (filtered) 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "foo:date<Thu Jul 13 2017 19:40:00 GMT-0700 (PDT)",
+    },
+    "payload": Array [
+      "789",
+    ],
+    "type": "firestore/queries/ADD",
+  },
+]
+`;
+
+exports[`Actions addQuery adds the query with appropriate documentIds if collection query exists (simple) 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "queryId": "foo/123",
+    },
+    "payload": Array [
+      "123",
+    ],
+    "type": "firestore/queries/ADD",
+  },
+]
+`;
 
 exports[`Actions getStorageDownloadUrl requests download URL 1`] = `
 Array [
@@ -128,8 +178,6 @@ Array [
   },
 ]
 `;
-
-exports[`Actions getStorageMetadata does nothing if already in state 1`] = `Array []`;
 
 exports[`Actions getStorageMetadata requests metadata 1`] = `
 Array [
@@ -170,9 +218,19 @@ Array [
       "queryId": "auth|users/123",
     },
     "payload": Object {
-      "get": [Function],
+      "get": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
       "id": "users/123",
-      "onSnapshot": [Function],
+      "onSnapshot": [MockFunction] {
+        "calls": Array [
+          Array [
+            [Function],
+          ],
+        ],
+      },
       "path": "users/123",
     },
     "type": "firestore/queries/REQUEST",
@@ -180,9 +238,19 @@ Array [
   Object {
     "meta": Object {
       "query": Object {
-        "get": [Function],
+        "get": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
         "id": "users/123",
-        "onSnapshot": [Function],
+        "onSnapshot": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Function],
+            ],
+          ],
+        },
         "path": "users/123",
       },
       "queryId": "auth|users/123",
@@ -191,9 +259,19 @@ Array [
       Object {
         "meta": Object {
           "query": Object {
-            "get": [Function],
+            "get": [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+            },
             "id": "users/123",
-            "onSnapshot": [Function],
+            "onSnapshot": [MockFunction] {
+              "calls": Array [
+                Array [
+                  [Function],
+                ],
+              ],
+            },
             "path": "users/123",
           },
         },
@@ -232,9 +310,19 @@ Array [
   Object {
     "meta": Object {
       "query": Object {
-        "get": [Function],
+        "get": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
         "id": "users/123",
-        "onSnapshot": [Function],
+        "onSnapshot": [MockFunction] {
+          "calls": Array [
+            Array [
+              [Function],
+            ],
+          ],
+        },
         "path": "users/123",
       },
       "queryId": "auth|users/123",
@@ -243,9 +331,19 @@ Array [
       Object {
         "meta": Object {
           "query": Object {
-            "get": [Function],
+            "get": [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+            },
             "id": "users/123",
-            "onSnapshot": [Function],
+            "onSnapshot": [MockFunction] {
+              "calls": Array [
+                Array [
+                  [Function],
+                ],
+              ],
+            },
             "path": "users/123",
           },
         },
@@ -293,9 +391,9 @@ Array [
   Object {
     "meta": Object {
       "query": Object {
-        "get": [Function],
+        "get": [MockFunction],
         "id": "users/123",
-        "onSnapshot": [Function],
+        "onSnapshot": [MockFunction],
         "path": "users/123",
       },
       "queryId": "auth|users/123",
@@ -306,9 +404,9 @@ Array [
           "queryId": "auth|users/123",
         },
         "payload": Object {
-          "get": [Function],
+          "get": [MockFunction],
           "id": "users/123",
-          "onSnapshot": [Function],
+          "onSnapshot": [MockFunction],
           "path": "users/123",
         },
         "type": "firestore/queries/REMOVE",
@@ -316,9 +414,9 @@ Array [
       Object {
         "meta": Object {
           "query": Object {
-            "get": [Function],
+            "get": [MockFunction],
             "id": "users/123",
-            "onSnapshot": [Function],
+            "onSnapshot": [MockFunction],
             "path": "users/123",
           },
         },
