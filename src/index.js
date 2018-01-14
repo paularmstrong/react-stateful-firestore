@@ -5,7 +5,7 @@ import connectAuth from './connectAuth';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 import '@firebase/firestore';
-import { FetchStatus } from './modules/fetchStatus';
+import { FetchStatus, resolveInitialFetchStatus, resolveFetchStatus } from './modules/fetchStatus';
 import Provider from './Provider';
 import reducers from './reducers';
 import { initSelect, initSelectAuth, initSelectStorage } from './selectors';
@@ -75,7 +75,8 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   });
 }
 
-export type Document<D> = { id: string, fetchStatus: $Values<typeof FetchStatus>, doc: D };
-export type Collection<D> = { fetchStatus: $Values<typeof FetchStatus>, docs: Array<Document<D>> };
+export type $FetchStatus = $Values<typeof FetchStatus>;
+export type Document<D> = { id: string, fetchStatus: $FetchStatus, doc: D };
+export type Collection<D> = { fetchStatus: $FetchStatus, docs: Array<Document<D>> };
 
-export { connect, connectAuth, FetchStatus, Provider };
+export { connect, connectAuth, FetchStatus, Provider, resolveInitialFetchStatus, resolveFetchStatus };

@@ -78,10 +78,20 @@ Other Exports:
 * [`connect`](#connectgetselectors)
 * [`connectAuth`](#connectauthhandleauthstate)
 * [`FetchStatus`](#fetchstatus)
+  * [`resolveFetchStatus`](#resolvefetchstatusitems)
+  * [`resolveInitialFetchStatus`](#resolveinitialfetchstatusitems)
 * [`Provider`](#providerstore-store)
+* [`Types`](#types)
 
 ```js
-import initReactFirestore, { connect, connectAuth, FetchStatus, Provider } from 'react-stateful-firestore';
+import initReactFirestore, {
+  connect,
+  connectAuth,
+  FetchStatus,
+  Provider,
+  resolveFetchStatus,
+  resolveInitialFetchStatus
+} from 'react-stateful-firestore';
 ```
 
 ### initReactFirestore(app, userCollection?)
@@ -280,3 +290,52 @@ A string representing the status of the query for a document. One of the followi
 | `LOADING` | `'loading'` | The document is currently in the process of loading |
 | `LOADED`  | `'loaded'`  | The document has been successfully received         |
 | `FAILED`  | `'failed'`  | There was an error requesting the document          |
+
+#### resolveFetchStatus(...items)
+
+Returns a single `FetchStatus` value given the state of multiple Collections or Documents. This method requires that _all_ items are loaded before returning `FetchStatus.LOADED`.
+
+|        | argument | type                                           | description |
+| ------ | -------- | ---------------------------------------------- | ----------- |
+| @param | …`items` | [`Collection`](#types) or [`Document`](#types) |             |
+
+#### resolveInitialFetchStatus(...items)
+
+Returns a single `FetchStatus` value given the _initial_ state of multiple Collections or Documents. This method will return `FetchStatus.LOADED` if _any_ item is loaded.
+
+|        | argument | type                                           | description |
+| ------ | -------- | ---------------------------------------------- | ----------- |
+| @param | …`items` | [`Collection`](#types) or [`Document`](#types) |             |
+
+## Types
+
+React Stateful Firestore also exposes a few flow types.
+
+### $FetchStatus
+
+A FetchStatus value.
+
+### Document<D>
+
+Creates a type for documents provided as props on your `connect`ed components.
+
+```js
+type MyDocument = Document<{ name: string }>
+
+const doc: MyDocument;
+console.log(doc.fetchStatus); // -> A $FetchStatus
+console.log(doc.id); // -> The Firestore document id
+console.log(doc.doc); // -> The data in the document on Firestore
+```
+
+### Collection<D>
+
+Creates a type for collections provided as props on your `connect`ed components
+
+```js
+type MyCollection = Collection<{ name: string }>
+
+const collection: MyCollection;
+console.log(collection.fetchStatus); // -> A $FetchStatus
+console.log(collection.docs); // -> Array of Documents
+```
