@@ -23,6 +23,7 @@
     "format:check": "find src -name '*.js' | xargs prettier --debug-check",
     "lint": "eslint src/ --fix",
     "lint:check": "eslint src/",
+    "release": "yarn build && yarn publish",
     "prebuild": "rimraf build",
     "precommit": "flow && lint-staged",
     "test": "BABEL_ENV=development jest"
