@@ -75,4 +75,7 @@ export default function init(app: App, userCollection?: string): Promise<any> {
   });
 }
 
+export type Document<D> = { id: string, fetchStatus: $Values<typeof FetchStatus>, doc: D };
+export type Collection<D> = { fetchStatus: $Values<typeof FetchStatus>, docs: Array<Document<D>> };
+
 export { connect, connectAuth, FetchStatus, Provider };
