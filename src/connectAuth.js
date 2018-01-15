@@ -22,6 +22,8 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
 ): React$ComponentType<*> => {
   return class extends Component<Props, State> {
     _unsubscribe: null | (() => void);
+    _mounted: boolean;
+
     context: {
       firebase: {
         auth: firebase.auth.Auth,
@@ -43,6 +45,7 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
     constructor(props: Props, context: any) {
       super(props, context);
       this.state = { doc: emptyObject, fetchStatus: FetchStatus.LOADING };
+      this._mounted = false;
     }
 
     componentWillMount() {
@@ -56,6 +59,10 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
         this._unsubscribe();
         this._unsubscribe = null;
       }
+    }
+
+    componentDidMount() {
+      this._mounted = true;
     }
 
     componentWillUpdate(nextProps: Props, nextState: State) {
@@ -79,6 +86,9 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
         messaging,
         storage
       };
+      if (this._mounted && fetchStatus === FetchStatus.LOADING) {
+        return <WrappedComponent {...this.props} {...props} />;
+      }
       switch (fetchStatus) {
         case FetchStatus.LOADED:
         case FetchStatus.FAILED: {
