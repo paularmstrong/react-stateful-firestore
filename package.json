@@ -33,11 +33,11 @@
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "peerDependencies": {
-    "@firebase/app": ">=4.8.1",
-    "@firebase/auth": ">=4.8.1",
-    "@firebase/firestore": ">=4.8.1",
-    "@firebase/messaging": ">=4.8.1",
-    "@firebase/storage": ">=4.8.1",
+    "@firebase/app": ">=0.1.5",
+    "@firebase/auth": ">=0.3.1",
+    "@firebase/firestore": ">=0.2.2",
+    "@firebase/messaging": ">=0.1.6",
+    "@firebase/storage": ">=0.1.5",
     "prop-types": ">=15.6.0",
     "react": ">=16.0.0"
   },
