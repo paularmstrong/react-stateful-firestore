@@ -141,7 +141,7 @@ export const getDocumentIdsForQuery = (query: Query, state: StoreState): Array<s
     return docs
       .map((doc) => (typeof doc === 'object' && doc && typeof doc.id === 'string' ? doc.id : undefined))
       .filter(Boolean)
-      .slice(0, limit);
+      .slice(0, limit || Infinity);
   }
   return emptyArray;
 };

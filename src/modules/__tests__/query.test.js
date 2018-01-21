@@ -61,7 +61,8 @@ describe('query', () => {
           {
             _query: {
               path: { segments: ['foo'] },
-              filters: [{ field: { segments: ['count'] }, op: { name: '<' }, value: { internalValue: 4 } }]
+              filters: [{ field: { segments: ['count'] }, op: { name: '<' }, value: { internalValue: 4 } }],
+              limit: null
             }
           },
           {
@@ -89,7 +90,8 @@ describe('query', () => {
                   }
                 },
                 { field: { segments: ['b'] }, op: { name: '==' }, value: { internalValue: 4 } }
-              ]
+              ],
+              limit: 2
             }
           },
           {
