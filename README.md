@@ -180,7 +180,7 @@ export default connect((select, { firestore, storage }, props) => ({
 
 #### getSelectors(select, apis, props)
 
-A function that returns a map of data selectors to props supplied to your final rendered component.
+A function that returns a map of props to data selectors supplied to your final rendered component.
 
 |         | argument | type                      | description                                                |
 | ------- | -------- | ------------------------- | ---------------------------------------------------------- |

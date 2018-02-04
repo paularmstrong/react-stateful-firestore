@@ -103,4 +103,16 @@ describe('connect', () => {
     expect(mockSelect).toHaveBeenCalledWith({ firestore: true, path: 'things' }, thingOptions);
     expect(mockSelectStorage).toHaveBeenCalledWith({ storage: true, path: 'image' }, imageOptions);
   });
+
+  test('allows non-selector selectors', () => {
+    const ConnectedComponent = connect((select, { firestore }) => ({
+      foo: null,
+      bar: '123',
+      user: select(firestore.doc('user'))
+    }))(MockComponent);
+
+    const wrapper = shallow(<ConnectedComponent />, { context });
+    expect(wrapper.find(MockComponent).prop('foo')).toEqual(null);
+    expect(wrapper.find(MockComponent).prop('bar')).toEqual('123');
+  });
 });

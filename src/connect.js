@@ -73,7 +73,8 @@ export const connect = (getSelectors: (select: Select, apis: Apis, props: Props)
       };
       const querySelectors = getSelectors(selector, { auth, firestore, storage }, this.props);
       this._selectors = Object.keys(querySelectors).reduce((memo, propName: string) => {
-        memo[propName] = querySelectors[propName]();
+        const selector = querySelectors[propName];
+        memo[propName] = typeof selector === 'function' ? selector() : selector;
         return memo;
       }, {});
       this._unsubscribe = store.subscribe(this._handleState);
@@ -112,7 +113,8 @@ export const connect = (getSelectors: (select: Select, apis: Apis, props: Props)
 
     _reduceSelectors = (storeState: StoreState, state: State) =>
       Object.keys(this._selectors).reduce((memo, key: string) => {
-        state[key] = this._selectors[key](storeState, this.props);
+        const selector = this._selectors[key];
+        state[key] = typeof selector === 'function' ? selector(storeState, this.props) : selector;
         return state;
       }, state);
   };
