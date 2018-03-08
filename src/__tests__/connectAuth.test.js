@@ -109,11 +109,26 @@ describe('connectAuth', () => {
   });
 
   test('calls the handler function before render if already loaded', () => {
-    const userDoc = { uid: '123' };
-    mockSelectAuth.mockReturnValue({ fetchStatus: FetchStatus.LOADED, doc: userDoc });
+    mockSelectAuth.mockReturnValue({ fetchStatus: FetchStatus.LOADED });
     const handler = jest.fn();
     const ConnectedComponent = connectAuth(handler)(MockComponent);
     shallow(<ConnectedComponent />, { context });
     expect(handler).toHaveBeenCalled();
+  });
+
+  test('renders null if the handler function returns false', () => {
+    mockSelectAuth.mockReturnValue({ fetchStatus: FetchStatus.LOADED, doc: undefined });
+    const handler = jest.fn(() => false);
+    const ConnectedComponent = connectAuth(handler)(MockComponent);
+    const wrapper = shallow(<ConnectedComponent />, { context });
+    expect(wrapper.get(0)).toBeNull();
+  });
+
+  test('renders if the handler function returns anything else', () => {
+    mockSelectAuth.mockReturnValue({ fetchStatus: FetchStatus.LOADED, doc: undefined });
+    const handler = jest.fn();
+    const ConnectedComponent = connectAuth(handler)(MockComponent);
+    const wrapper = shallow(<ConnectedComponent />, { context });
+    expect(wrapper.get(0)).not.toBeNull();
   });
 });

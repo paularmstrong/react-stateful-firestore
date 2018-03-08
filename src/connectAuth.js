@@ -103,7 +103,10 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
         const { auth, selectAuth, store } = this.context.firebase;
         const { doc, fetchStatus } = selectAuth(store.getState());
         if (handleAuthStatus && !this._loaded && fetchStatus === FetchStatus.LOADED) {
-          handleAuthStatus({ doc, fetchStatus }, auth, this.props);
+          const blockHandling = handleAuthStatus({ doc, fetchStatus }, auth, this.props);
+          if (blockHandling === false) {
+            return;
+          }
         }
         this.setState(() => ({ doc, fetchStatus }));
       }
