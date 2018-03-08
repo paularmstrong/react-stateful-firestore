@@ -107,4 +107,13 @@ describe('connectAuth', () => {
       { foo: 'bar' }
     );
   });
+
+  test('calls the handler function before render if already loaded', () => {
+    const userDoc = { uid: '123' };
+    mockSelectAuth.mockReturnValue({ fetchStatus: FetchStatus.LOADED, doc: userDoc });
+    const handler = jest.fn();
+    const ConnectedComponent = connectAuth(handler)(MockComponent);
+    shallow(<ConnectedComponent />, { context });
+    expect(handler).toHaveBeenCalled();
+  });
 });

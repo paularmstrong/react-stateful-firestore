@@ -100,8 +100,11 @@ export const connectAuth = (handleAuthStatus?: AuthStatusHandler, WrappedLoading
 
     _handleState = () => {
       if (this._unsubscribe) {
-        const { selectAuth, store } = this.context.firebase;
+        const { auth, selectAuth, store } = this.context.firebase;
         const { doc, fetchStatus } = selectAuth(store.getState());
+        if (handleAuthStatus && !this._loaded && fetchStatus === FetchStatus.LOADED) {
+          handleAuthStatus({ doc, fetchStatus }, auth, this.props);
+        }
         this.setState(() => ({ doc, fetchStatus }));
       }
     };
