@@ -27,6 +27,8 @@ export const QUERIES = {
   REMOVE: createActionType('queries/REMOVE')
 };
 
+const onIdle = (fn: () => void) => (window.requestIdleCallback ? window.requestIdleCallback(fn) : setTimeout(fn, 1));
+
 const _handleReceiveSnapshot = (dispatch: Dispatch, query, queryId) => (snapshot) => {
   const actions = [];
   if (snapshot.docChanges) {
@@ -92,7 +94,7 @@ export const addListener = (query: Query, queryIdPrefix: string = '') => (
   }
 
   return new Promise((resolve) => {
-    window.requestIdleCallback(() => {
+    onIdle(() => {
       const unsubscribe = query.onSnapshot(_handleReceiveSnapshot(dispatch, query, queryId));
       resolve(dispatch({ type: LISTENERS.ADD, payload: unsubscribe, meta: { queryId } }));
     });
